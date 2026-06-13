@@ -1,0 +1,144 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  height: auto !important;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #ffffff;
+  color: #111111;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@keyframes rvIn {
+  from {
+    opacity: 0;
+    transform: translateY(32px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.reveal {
+  animation: rvIn linear both;
+  animation-timeline: view();
+  animation-range: entry 0% cover 24%;
+}
+
+.hero-panel {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: stretch;
+  min-height: 600px;
+}
+
+.hero-text {
+  padding: 72px 56px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-portrait {
+  position: relative;
+  min-height: 600px;
+}
+
+.nav-link {
+  transition: color 0.15s;
+}
+.nav-link:hover {
+  color: #111;
+}
+
+.email-btn {
+  transition: background 0.15s;
+}
+.email-btn:hover {
+  background: #333;
+}
+
+.pub-link {
+  transition: opacity 0.15s;
+}
+.pub-link:hover {
+  opacity: 0.62;
+}
+
+.project-card {
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.06);
+}
+
+.project-card-image img {
+  transition: transform 0.3s;
+}
+.project-card:hover .project-card-image img {
+  transform: scale(1.03);
+}
+
+.contact-email {
+  transition: color 0.15s;
+}
+.contact-email:hover {
+  color: #9d86ff;
+}
+
+.social-link {
+  transition: background 0.15s;
+}
+.social-link:hover {
+  background: #222;
+}
+
+@media (max-width: 960px) {
+  .hero-panel {
+    grid-template-columns: 1fr;
+  }
+  .hero-text {
+    order: 2;
+    padding: 40px 36px 48px;
+  }
+  .hero-portrait {
+    order: 1;
+    min-height: 0;
+    height: 420px;
+  }
+  .hero-text h1 {
+    font-size: clamp(32px, 5.4vw, 46px);
+  }
+}
+
+@media (max-width: 560px) {
+  .hero-text {
+    padding: 32px 24px 40px;
+  }
+  .hero-portrait {
+    height: 360px;
+  }
+}
