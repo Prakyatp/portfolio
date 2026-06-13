@@ -1,4 +1,5 @@
 import Image from "next/image";
+import EmailLink from "./EmailLink";
 
 const pillStyle: React.CSSProperties = {
   fontSize: "12.5px",
@@ -46,8 +47,7 @@ export default function Home() {
           <a href="#projects" className="nav-link">Projects</a>
           <a href="#contact" className="nav-link">Contact</a>
         </nav>
-        <a
-          href="mailto:prakyat02@gmail.com"
+        <EmailLink
           className="email-btn"
           style={{
             display: "inline-flex",
@@ -62,7 +62,7 @@ export default function Home() {
           }}
         >
           Email Me
-        </a>
+        </EmailLink>
       </header>
 
       {/* ===== HERO ===== */}
@@ -536,13 +536,12 @@ export default function Home() {
           >
             <div>
               <div style={{ fontSize: "13px", color: "#8a8a8a", marginBottom: "14px" }}>Get in touch</div>
-              <a
-                href="mailto:prakyat02@gmail.com"
+              <EmailLink
                 className="contact-email"
                 style={{ fontSize: "clamp(28px,4vw,40px)", fontWeight: 500, letterSpacing: "-0.02em", color: "#fff" }}
               >
                 prakyat02@gmail.com
-              </a>
+              </EmailLink>
               <div style={{ fontSize: "14px", color: "#8a8a8a", marginTop: "14px" }}>
                 Open to software engineering and machine learning roles for 2026.
               </div>
