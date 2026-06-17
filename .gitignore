@@ -35,6 +35,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# unrelated working directories
-/Paychex/
-/Portfolio/
+# local-only extras, not part of the deployed site
+/portfolio-handoff.zip
+/Prakyat_Prakash_resume.pdf
+public/assets/Screenshot*.png
