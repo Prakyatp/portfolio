@@ -386,24 +386,27 @@ export default function Home() {
       </section>
 
       {/* ===== PROJECTS ===== */}
-      <section id="projects" style={{ maxWidth: "1180px", margin: "0 auto", padding: "70px 40px" }}>
-        <div
-          className="reveal"
-          style={{
-            fontSize: "17px",
-            fontWeight: 600,
-            color: "#5b3df0",
-            letterSpacing: "0.06em",
-            textTransform: "uppercase",
-            marginBottom: "14px",
-          }}
-        >
-          Projects
+      <section id="projects" style={{ padding: "70px 0" }}>
+        <div style={{ maxWidth: "1180px", margin: "0 auto", padding: "0 40px" }}>
+          <div
+            className="reveal"
+            style={{
+              fontSize: "17px",
+              fontWeight: 600,
+              color: "#5b3df0",
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              marginBottom: "14px",
+            }}
+          >
+            Projects
+          </div>
+          <h2 className="reveal" style={{ margin: "0 0 38px", fontSize: "42px", fontWeight: 500, letterSpacing: "-0.025em" }}>
+            Things I&apos;ve built
+          </h2>
         </div>
-        <h2 className="reveal" style={{ margin: "0 0 38px", fontSize: "42px", fontWeight: 500, letterSpacing: "-0.025em" }}>
-          Things I&apos;ve built
-        </h2>
-        <div style={{ display: "flex", gap: "20px", overflowX: "auto", paddingBottom: "12px", scrollSnapType: "x mandatory" }}>
+        <div style={{ width: "100vw", position: "relative", left: "50%", transform: "translateX(-50%)" }}>
+        <div style={{ display: "flex", gap: "20px", overflowX: "auto", padding: "0 40px 12px", scrollSnapType: "x mandatory" }}>
           <div className="project-card" style={{ border: "1px solid #ebebe7", borderRadius: "18px", overflow: "hidden", background: "#fff", display: "flex", flexDirection: "column", minWidth: "420px", scrollSnapAlign: "start" }}>
             <a
               href="https://prakyatp.github.io/PTM_Negatives_Extraction/"
@@ -452,6 +455,56 @@ export default function Home() {
               </div>
             </div>
           </div>
+
+          <a
+            href="https://prakyatp.github.io/wc2026-break-analyzer/"
+            target="_blank"
+            rel="noopener"
+            className="project-card"
+            style={{ border: "1px solid #ebebe7", borderRadius: "18px", overflow: "hidden", background: "#fff", display: "flex", flexDirection: "column", textDecoration: "none", color: "inherit", minWidth: "420px", scrollSnapAlign: "start" }}
+          >
+            <div style={{ position: "relative", height: "230px", overflow: "hidden" }}>
+              <Image
+                src="/assets/wc2026-dashboard.png"
+                alt="WC2026 Hydration Break Analyzer dashboard"
+                fill
+                style={{ objectFit: "cover", objectPosition: "50% 0%" }}
+              />
+            </div>
+            <div style={{ padding: "24px", display: "flex", flexDirection: "column", flex: 1 }}>
+              <h3 style={{ margin: "0 0 12px", fontSize: "19px", fontWeight: 600, letterSpacing: "-0.01em" }}>
+                WC2026 Hydration Break Effect Analyzer
+              </h3>
+              <p style={{ margin: "0 0 18px", fontSize: "14px", lineHeight: 1.6, color: "#666" }}>
+                Built a Python pipeline scraping every WC2026 match from ESPN&apos;s API, detecting exact hydration
+                break timestamps and measuring attacking pressure in the 10 minutes either side. Found that 85–87% of
+                pressing teams lose momentum after breaks while non-pressing teams consistently gain it — a statistically
+                significant equalizer effect across 18+ matches. Dashboard auto-updates daily via GitHub Actions.
+              </p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "7px", marginTop: "auto", marginBottom: "16px" }}>
+                <span style={tagStyle}>Python</span>
+                <span style={tagStyle}>ESPN API</span>
+                <span style={tagStyle}>Next.js</span>
+                <span style={tagStyle}>Groq</span>
+                <span style={tagStyle}>GitHub Actions</span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  fontFamily: "var(--font-jetbrains-mono), monospace",
+                  fontSize: "12px",
+                  color: "#999",
+                  paddingTop: "14px",
+                  borderTop: "1px solid #f0f0ec",
+                }}
+              >
+                <span>Jun 2026</span>
+                <span style={{ color: "#5b3df0" }}>● Live</span>
+              </div>
+            </div>
+          </a>
 
           <div className="project-card" style={{ border: "1px solid #ebebe7", borderRadius: "18px", overflow: "hidden", background: "#fff", display: "flex", flexDirection: "column", minWidth: "420px", scrollSnapAlign: "start" }}>
             <div style={{ position: "relative", background: "#121310", height: "230px", overflow: "hidden" }}>
@@ -517,55 +570,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <a
-            href="https://prakyatp.github.io/wc2026-break-analyzer/"
-            target="_blank"
-            rel="noopener"
-            className="project-card"
-            style={{ border: "1px solid #ebebe7", borderRadius: "18px", overflow: "hidden", background: "#fff", display: "flex", flexDirection: "column", textDecoration: "none", color: "inherit", minWidth: "420px", scrollSnapAlign: "start" }}
-          >
-            <div style={{ position: "relative", height: "230px", overflow: "hidden" }}>
-              <Image
-                src="/assets/wc2026-dashboard.png"
-                alt="WC2026 Hydration Break Analyzer dashboard"
-                fill
-                style={{ objectFit: "cover", objectPosition: "50% 0%" }}
-              />
-            </div>
-            <div style={{ padding: "24px", display: "flex", flexDirection: "column", flex: 1 }}>
-              <h3 style={{ margin: "0 0 12px", fontSize: "19px", fontWeight: 600, letterSpacing: "-0.01em" }}>
-                WC2026 Hydration Break Effect Analyzer
-              </h3>
-              <p style={{ margin: "0 0 18px", fontSize: "14px", lineHeight: 1.6, color: "#666" }}>
-                Built a Python pipeline scraping every WC2026 match from ESPN&apos;s API, detecting exact hydration
-                break timestamps and measuring attacking pressure in the 10 minutes either side. Found that 85–87% of
-                pressing teams lose momentum after breaks while non-pressing teams consistently gain it — a statistically
-                significant equalizer effect across 18+ matches. Dashboard auto-updates daily via GitHub Actions.
-              </p>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "7px", marginTop: "auto", marginBottom: "16px" }}>
-                <span style={tagStyle}>Python</span>
-                <span style={tagStyle}>ESPN API</span>
-                <span style={tagStyle}>Next.js</span>
-                <span style={tagStyle}>Groq</span>
-                <span style={tagStyle}>GitHub Actions</span>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  fontFamily: "var(--font-jetbrains-mono), monospace",
-                  fontSize: "12px",
-                  color: "#999",
-                  paddingTop: "14px",
-                  borderTop: "1px solid #f0f0ec",
-                }}
-              >
-                <span>Jun 2026</span>
-                <span style={{ color: "#5b3df0" }}>● Live</span>
-              </div>
-            </div>
-          </a>
+        </div>
         </div>
       </section>
 
