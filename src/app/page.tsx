@@ -262,7 +262,7 @@ export default function Home() {
             <span style={{ fontSize: "15px", color: "#999" }}>↗</span>
           </a>
           <a
-            href="https://doi.org/10.64898/2025.12.30.697010"
+            href="https://doi.org/10.1038/s41467-026-74448-4"
             target="_blank"
             rel="noopener"
             className="pub-link"
@@ -282,7 +282,7 @@ export default function Home() {
               <div style={{ fontSize: "13.5px", color: "#777", lineHeight: 1.5 }}>
                 Carson, C.W., Nagalakshmi, S.U., Adhikari, I., Freewoman, J.M., Pizzi, J.R.,{" "}
                 <strong style={{ color: "#333" }}>Prakash, P.</strong>, &amp; Cui, F. <span style={{ color: "#bbb" }}>·</span>{" "}
-                <em>bioRxiv</em>, 2025
+                <em>Nature Communications</em>, 2026
               </div>
             </div>
             <span style={{ fontSize: "15px", color: "#999" }}>↗</span>
@@ -326,8 +326,8 @@ export default function Home() {
                 <span style={{ color: "#5b3df0", flexShrink: 0 }}>▶</span>
                 <span>
                   Co-authored 2 research papers in computational genomics: a peer-reviewed publication in{" "}
-                  <em>Frontiers in Bioinformatics</em> on ML-based bladder cancer biomarker discovery, and a paper on
-                  nucleosome–transcription factor interactions.
+                  <em>Frontiers in Bioinformatics</em> on ML-based bladder cancer biomarker discovery, and a paper in{" "}
+                  <em>Nature Communications</em> on nucleosome–transcription factor interactions.
                 </span>
               </li>
               <li style={{ display: "flex", gap: "11px", fontSize: "14.5px", lineHeight: 1.55, color: "#555" }}>
@@ -342,6 +342,42 @@ export default function Home() {
                 <span>
                   Built a dual-pass FASTA verification pipeline with tryptic-context filtering, correcting
                   trypsin-cleavage bias and reducing terminal-K over-representation from 33.2% to 3.6%.
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "230px 1fr", gap: "36px", padding: "30px 0", borderTop: "1px solid #ebebe7" }}>
+          <div>
+            <div style={{ fontFamily: "var(--font-jetbrains-mono), monospace", fontSize: "13px", color: "#5b3df0", fontWeight: 500 }}>
+              Jan 2025 – Apr 2025
+            </div>
+            <div style={{ fontSize: "13.5px", color: "#999", marginTop: "8px" }}>Remote, NY</div>
+          </div>
+          <div>
+            <h3 style={{ margin: 0, fontSize: "20px", fontWeight: 600, letterSpacing: "-0.01em" }}>AI Engineer</h3>
+            <div style={{ fontSize: "15px", color: "#666", margin: "4px 0 16px" }}>Handshake AI</div>
+            <ul style={{ display: "flex", flexDirection: "column", gap: "11px" }}>
+              <li style={{ display: "flex", gap: "11px", fontSize: "14.5px", lineHeight: 1.55, color: "#555" }}>
+                <span style={{ color: "#5b3df0", flexShrink: 0 }}>▶</span>
+                <span>
+                  Architected an LLM-based RAG pipeline for Python automation tasks, improving code generation
+                  accuracy by 25% through targeted retrieval optimization and prompt engineering.
+                </span>
+              </li>
+              <li style={{ display: "flex", gap: "11px", fontSize: "14.5px", lineHeight: 1.55, color: "#555" }}>
+                <span style={{ color: "#5b3df0", flexShrink: 0 }}>▶</span>
+                <span>
+                  Built a systematic LLM evaluation and debugging workflow using LangChain tooling, cutting output
+                  error rates by 30% and enabling faster root-cause diagnosis of model failures.
+                </span>
+              </li>
+              <li style={{ display: "flex", gap: "11px", fontSize: "14.5px", lineHeight: 1.55, color: "#555" }}>
+                <span style={{ color: "#5b3df0", flexShrink: 0 }}>▶</span>
+                <span>
+                  Standardized response generation frameworks for chat-based LLM interactions, driving consistent,
+                  production-grade execution across automated workflows.
                 </span>
               </li>
             </ul>
@@ -404,10 +440,8 @@ export default function Home() {
           <h2 className="reveal" style={{ margin: "0 0 38px", fontSize: "42px", fontWeight: 500, letterSpacing: "-0.025em" }}>
             Things I&apos;ve built
           </h2>
-        </div>
-        <div style={{ width: "100vw", position: "relative", left: "50%", transform: "translateX(-50%)" }}>
-        <div style={{ display: "flex", gap: "20px", overflowX: "auto", padding: "0 40px 12px", scrollSnapType: "x mandatory" }}>
-          <div className="project-card" style={{ border: "1px solid #ebebe7", borderRadius: "18px", overflow: "hidden", background: "#fff", display: "flex", flexDirection: "column", minWidth: "420px", scrollSnapAlign: "start" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "24px" }}>
+          <div className="project-card" style={{ border: "1px solid #ebebe7", borderRadius: "18px", overflow: "hidden", background: "#fff", display: "flex", flexDirection: "column" }}>
             <a
               href="https://prakyatp.github.io/PTM_Negatives_Extraction/"
               target="_blank"
@@ -461,7 +495,7 @@ export default function Home() {
             target="_blank"
             rel="noopener"
             className="project-card"
-            style={{ border: "1px solid #ebebe7", borderRadius: "18px", overflow: "hidden", background: "#fff", display: "flex", flexDirection: "column", textDecoration: "none", color: "inherit", minWidth: "420px", scrollSnapAlign: "start" }}
+            style={{ border: "1px solid #ebebe7", borderRadius: "18px", overflow: "hidden", background: "#fff", display: "flex", flexDirection: "column", textDecoration: "none", color: "inherit" }}
           >
             <div style={{ position: "relative", height: "230px", overflow: "hidden" }}>
               <Image
@@ -506,52 +540,38 @@ export default function Home() {
             </div>
           </a>
 
-          <div className="project-card" style={{ border: "1px solid #ebebe7", borderRadius: "18px", overflow: "hidden", background: "#fff", display: "flex", flexDirection: "column", minWidth: "420px", scrollSnapAlign: "start" }}>
+          <a
+            href="https://github.com/Prakyatp/carebridge"
+            target="_blank"
+            rel="noopener"
+            className="project-card"
+            style={{ border: "1px solid #ebebe7", borderRadius: "18px", overflow: "hidden", background: "#fff", display: "flex", flexDirection: "column", textDecoration: "none", color: "inherit" }}
+          >
             <div style={{ position: "relative", background: "#121310", height: "230px", overflow: "hidden" }}>
               <Image
-                src="/assets/nyc-dashboard.png"
-                alt="NYC Employee Time & Pay Dashboard, payroll rules engine"
+                src="/assets/carebridge-dashboard.png"
+                alt="CareBridge cross-border healthcare cost comparison dashboard"
                 fill
-                style={{ objectFit: "cover", objectPosition: "50% 50%" }}
+                style={{ objectFit: "cover", objectPosition: "50% 0%" }}
               />
-              <span
-                style={{
-                  position: "absolute",
-                  top: "12px",
-                  left: "12px",
-                  zIndex: 6,
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  background: "rgba(14,14,14,.78)",
-                  color: "#fff",
-                  fontFamily: "var(--font-jetbrains-mono), monospace",
-                  fontSize: "11px",
-                  fontWeight: 500,
-                  padding: "7px 12px",
-                  borderRadius: "8px",
-                  backdropFilter: "blur(4px)",
-                }}
-              >
-                In progress
-              </span>
             </div>
             <div style={{ padding: "24px", display: "flex", flexDirection: "column", flex: 1 }}>
               <h3 style={{ margin: "0 0 12px", fontSize: "19px", fontWeight: 600, letterSpacing: "-0.01em" }}>
-                NYC Employee Time &amp; Pay Dashboard
+                CareBridge
               </h3>
               <p style={{ margin: "0 0 18px", fontSize: "14px", lineHeight: 1.6, color: "#666" }}>
-                Built a serverless payroll system on AWS implementing a NY State labor-law rules engine with 8+
-                compliance rules spanning overtime, holiday pay, and spread-of-hours across 500+ shifts. Designed a
-                REST API with 5 Lambda-backed endpoints delivering pay-stub generation in under 2 seconds, and
-                integrated Spark to batch-process 10,000+ historical records, cutting weekly reporting time by 60%.
+                Cross-border healthcare cost navigator: sourced and structured pricing, treatment duration, and
+                recovery data across 10+ countries for 30+ medical procedures. Built a RAG-based conversational
+                chatbot answering patient queries on cost and hospital options, cutting average research time for
+                cross-border care decisions by an estimated 40%. Modeled the full patient decision journey in a
+                Neo4j knowledge graph spanning 5+ touchpoints, from initial inquiry to final hospital selection.
               </p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: "7px", marginTop: "auto", marginBottom: "16px" }}>
                 <span style={tagStyle}>Python</span>
-                <span style={tagStyle}>AWS Lambda</span>
-                <span style={tagStyle}>DynamoDB</span>
-                <span style={tagStyle}>API Gateway</span>
-                <span style={tagStyle}>S3</span>
+                <span style={tagStyle}>RAG</span>
+                <span style={tagStyle}>Neo4j</span>
+                <span style={tagStyle}>LLMs</span>
+                <span style={tagStyle}>Vector DB</span>
               </div>
               <div
                 style={{
@@ -569,7 +589,7 @@ export default function Home() {
                 <span>2026</span>
               </div>
             </div>
-          </div>
+          </a>
         </div>
         </div>
       </section>
