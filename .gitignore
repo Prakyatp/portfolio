@@ -39,3 +39,6 @@ next-env.d.ts
 /portfolio-handoff.zip
 /Prakyat_Prakash_resume.pdf
 public/assets/Screenshot*.png
+
+# QA artifacts from the awwwards skill
+.shots/
