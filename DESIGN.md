@@ -11,23 +11,38 @@ prakyatprakash.com. What it is, how it is built, and what still needs your words
 
 ## Direction: the shelf
 
-The landing page is the ThreeUI **Complete Shelf** page, running its own authored Three.js presentation. The name sits in the middle of the masthead and the five volumes are the five sections of the CV: Education, Research, Experience, Projects, Contact. Clicking one opens a panel that holds that whole section at once — it never scrolls; `fitPanel()` steps `--panel-scale` down until it fits, so Projects lands at 0.825 and the rest at 1.0. The book gives up room to the panel. The Projects volume prints the real screenshots on its pages, and tapping a page opens that site.
-presentation, with one thing changed: the seven volumes about other people's tools are replaced
-by five about Prakyat's own work.
+The landing page is the ThreeUI **Complete Shelf** page, running its own authored Three.js
+presentation. The name sits in the middle of the masthead, and the five volumes on the shelf are
+the five sections of the CV.
 
-| | Volume | Opens |
+| | Volume | The panel holds |
 |---|---|---|
-| I | **Hydration Break** — WC2026 Hydration Break Analyzer | Live dashboard |
-| II | **PTM Negatives** — PTM Dataset Extraction Pipeline | Live dashboard |
-| III | **CareBridge** — medical cost navigator | Repository |
-| IV | **Bladder Cancer** — *Frontiers in Bioinformatics*, 2026 | DOI |
-| V | **DNA Codes** — *Nature Communications*, 2026 | DOI |
+| I | **Education** | RIT, the dates, the degree, the six courses |
+| II | **Research** | one line on ML and deep learning in genomics, then both papers as cards linking to their DOIs |
+| III | **Experience** | all three roles with org, dates, place and bullets |
+| IV | **Projects** | three blocks, each led by the button to the live site |
+| V | **Contact** | email, LinkedIn, GitHub, résumé |
 
-Each is a real hardcover in the scene: cloth with a woven normal and roughness map, embossed foil
-on the front, spine and back, printed endpapers, a page block with gutter compression and
-signatures, headbands, a ribbon, and eight interior pages generated from that volume's own text.
-Select one and the whole room — walls, shelf, every light — crossfades to its palette. Open it and
-the cover swings, the pages flex as real geometry, and you can drag a page across the gutter.
+Each volume is a real hardcover in the scene: cloth with a woven normal and roughness map,
+embossed foil on the front, spine and back, printed endpapers, a page block with gutter
+compression and signatures, headbands, a ribbon, and eight interior pages generated from that
+section's own text. Select one and the whole room — walls, shelf, every light — crossfades to its
+palette. Open it and the cover swings, the pages flex as real geometry, and you can drag a page
+across the gutter.
+
+**The panel never scrolls.** Each volume carries the markup for its own right-hand side, and
+`fitPanel()` steps `--panel-scale` down until the column fits. It has to ask two questions, not
+one: a short section leaves the panel under its ceiling and nothing is clipped, while a long one
+pins the panel at the ceiling and the clipping shows up *inside* the body instead. Measured at
+1440 × 900, Projects settles at 0.825 and the other four fit at 1.0.
+
+**Inside the Projects book, the pages print the real screenshots** of each site, and tapping a
+page opens it — the cursor says so first. Each page face carries its interior-page index, which
+is how a tap is told apart from a drag across the gutter.
+
+The book gives up room to the panel: the inspect scale floor drops from 0.9 to 0.58, and the
+world placement is pulled back from −2.25 to −1.52 because the wider panel already doubled the
+camera's view offset, and the two together walked the book off the left edge.
 
 ---
 
@@ -42,46 +57,33 @@ The source was fetched, not reconstructed.
 | SHA-256 as fetched | `8f1256796bab42b0d60e187176dfcc9d9df33cec1d22ca6f3c3767dcfeca4cb9` |
 | SHA-256 in the brief | `606f200fed8602c243f40a11c8c364f0e625c57f80e7c97dc76419da207f198e`, 900,296 bytes |
 
-**The live file no longer matches the registered revision.** The registry entry describes an older
-build whose media was base64-embedded, which is where the extra ~710 KB went; the live document
-carries the same images as Supabase storage URLs instead. The pasted source bundle agrees with the
-live file on every anchor checked — the book array, the geometry builders, the texture generators,
-the interaction state machine, the disposal path — so the file on disk is the canonical current
-document. Nothing here was rebuilt from a screenshot.
+**The live file no longer matches the registered revision.** The registry entry describes an
+older build whose media was base64-embedded, which is where the extra ~710 KB went; the live
+document carries the same images as Supabase storage URLs instead. The pasted source bundle
+agreed with the live file on every anchor checked — the book array, the geometry builders, the
+texture generators, the interaction state machine, the disposal path — so what was copied in is
+the canonical current document. Nothing here was rebuilt from a screenshot.
 
-### What was changed, and nothing else
+### What was changed
 
-71 hunks, 1,035 of 6,558 lines. The panel, the volume data and the interior pages are rewritten; the renderer, lighting, materials, geometry, gestures, reduced-motion and disposal paths are not.
+71 hunks, 1,035 of 6,558 lines, across two passes: first the volumes, then the sections.
 
-| Lines | Change |
+| | |
 |---|---|
-| 1749–1980 | The `BOOKS` array: five volumes instead of seven |
-| 10, 12, 1613–1618 | Title, description and masthead carry his name instead of the series name |
-| 2479, 2505, 2821, 3234 | The foil on every cover, spine and page reads `PRAKYAT PRAKASH` |
-| 1664–1684, 4386–4389 | The four detail rows are labelled by the volume |
-| 1703, 1390–1399, 5684 | **The one addition:** each volume opens the thing it is about |
-| 1713–1731, 595–601, 788 | The no-WebGL catalog lists the five, and its titles link out |
-| 2930 | One line of colophon text |
+| Rewritten | the `BOOKS` array, the right-hand panel and the interior pages |
+| Added | the per-volume panel markup, `fitPanel()`, page-plate loading, tap-to-open on a page, the centred masthead |
+| Untouched | every shader, light, material, geometry builder, pointer gesture, keyboard path, responsive rule, reduced-motion branch, visibility handler, context-loss fallback and disposal routine |
 
-Every shader, light, material, geometry builder, texture generator, pointer gesture, keyboard
-path, responsive rule, reduced-motion branch, visibility handler, context-loss fallback and
-disposal routine is untouched.
+Two decisions worth recording.
 
-**Why the detail rows are data-driven.** A pipeline and a peer-reviewed paper do not describe
-themselves with the same four words. Volume II reads *Built with · Scale · Finding · Opens*;
-Volume V reads *Authors · Journal · Subject · Opens*. Each volume carries its own labels rather
-than everything being forced into Binding / Format / Theme / Motif.
+**The foil on Research and Contact was lifted.** `#efc16d` on burnt orange and `#efb0aa` on
+vermilion both sat around 3:1 against their own cloth, and the foil is what carries the title on
+the cover and the spine. They are now `#ffe2b8` and `#ffd9d2`, around 4:1. The other three were
+already clear.
 
-**Why the one addition.** You have asked three times that a project open the real thing. The
-authored page has no outward links at all, so one control was added to the detail panel: it takes
-the volume's own href, joins the existing focus trap, and is drawn by the page's own
-`.text-button` rule.
-
-**Why the cloth colours are the authored ones.** The seven cover artworks live in one embedded
-atlas and are assigned by shelf position, so a volume's cloth, spine and back have to agree with
-the artwork it is handed. Each volume therefore takes the palette the artwork was tuned against —
-ultramarine, burnt orange, citron, cobalt, vermilion — rather than a colour picked for its subject.
-The first pass used subject colours and the cloth visibly disagreed with the cover.
+**The cloth colours are the authored ones.** The cover artworks live in one embedded atlas and
+are handed out by shelf position, so a volume's cloth has to agree with the artwork it is given.
+An earlier pass used subject colours and the two visibly clashed.
 
 ---
 
@@ -89,7 +91,7 @@ The first pass used subject colours and the cloth visibly disagreed with the cov
 
 Per the integration brief: the document is served from `public/`, loaded by URL into a full-size
 iframe with the authored sandbox string, and never imported into the application's JavaScript
-graph. First Load JS is **89.8 kB** — the 190 KB document is not part of it.
+graph. First Load JS is **89.8 kB** — the document itself is not part of it.
 
 | File | |
 |---|---|
@@ -108,7 +110,7 @@ appends a style block to the loaded document's head; the packaged file is never 
 One consequence worth knowing: `primaryColor` sets `--accent`, but the authored page rewrites
 `--accent` to the selected volume's foil as an inline style on `documentElement` every time the
 selection changes. So the prop governs the first frame and the volume governs the rest. That is
-the page's own behaviour, not a bug in the seam.
+the page's own behaviour, not a fault in the seam.
 
 ---
 
@@ -118,38 +120,35 @@ Production build, driven in a real browser. Scripts in `.qa/` (gitignored).
 
 | | Result |
 |---|---|
-| Five volumes, counter, titles, palettes | correct, and the room crossfades with the selection |
-| Detail panel, a project | `Built with · Scale · Finding · Opens`, values from the volume |
-| Detail panel, a paper | `Authors · Journal · Subject · Opens`, full author list, DOI |
-| Each volume opens its own thing | visible row link **and** a control, both to the right URL |
-| Book opens, pages turn | `Title page 01/05` → `Break window · Notes 03/05` |
-| Dragging a page across the gutter | holds; the spread does not jump |
-| Typography seam | applied; `--serif` resolves to Iowan Old Style |
-| Mobile 390 × 844 | WebGL up, no horizontal overflow, the host does not scroll |
-| Reduced motion | the detail view opens with no transition, as authored |
-| No WebGL | the static catalog appears with all five titles, each a link |
+| Five sections at 1440 × 900 | **no overflow in any of them**; scale 1.0, 1.0, 1.0, 0.825, 1.0 |
+| Education at 390 × 844 | fits at 0.825, no horizontal scroll |
+| Links in the panels | 2 DOIs, 3 project URLs, 4 contact links — all correct |
+| Tap a page in the Projects book | cursor reads `has-page-link`, tap opened the PTM dashboard |
+| Book clears the panel | yes, after the placement correction |
+| No WebGL | catalog shown, five columns, all five section titles |
+| Reduced motion | opening and closing both land at once; panel fits at 1.0 |
 | Console errors, host and frame | **0** |
 
 One thing worth knowing about verifying this page: **the open and close transitions are
 frame-count-bound, not wall-clock-bound.** `transitionTime` advances by `delta / 0.92` with
 `delta` capped at 0.05, so the move always costs at least ~18 rendered frames. On real hardware
 that is under a second. In headless Chromium, where this scene renders at a few frames a second,
-it can take tens of seconds — the first test runs timed out against it and looked like a hang. A
-side-by-side against the pristine, unedited document confirmed the same behaviour there, and
-confirmed it is slower with seven books than with five.
+it can take tens of seconds — early test runs timed out against it and looked like a hang. A
+side-by-side against the pristine, unedited document confirmed the same behaviour there. Tests
+should wait on state, with a long ceiling, and open each section in its own page rather than
+closing between them.
 
 ---
 
 ## To replace
 
-Nothing on this page is written by me. Every title, author list, journal, date, stack, count and
-description is yours.
+Nothing on this page is written by me — every date, course, author list, journal, metric and
+project description is yours.
 
 Two things you may want to change:
 
-- **The volume titles are shortened for the spine** — *Hydration Break*, *PTM Negatives*,
-  *Bladder Cancer*, *DNA Codes* — with the full name in the deck. Say the word if you want
-  different ones.
+- **The bullets under Experience are two per role**, chosen to keep all three roles on one
+  screen without the type shrinking. The résumé carries the rest.
 - **The cover artworks are ThreeUI's**, from the embedded atlas. They are abstract and read as
   field-guide covers, but they were drawn for someone else's books. Replacing them means making
   five new 2:3 artworks; the code takes them from one atlas image, so it is a drop-in.
