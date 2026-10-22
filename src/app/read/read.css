@@ -1,0 +1,384 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   /read — the plain version
+   The shelf is the portfolio. This is the same material in the order a reader
+   expects it, on one scroll, with nothing to operate: no 3D, no reveals, no
+   smooth-scroll hijack of its own. Everything is in the DOM at first paint so
+   it is readable with JS off, searchable with ctrl-F, and printable.
+   Built from the tokens in globals.css.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.read {
+  --read-maxw: 46rem;
+  max-width: var(--read-maxw);
+  margin: 0 auto;
+  padding: clamp(2rem, 1.4rem + 2.6vw, 4rem) var(--gutter) var(--s-7);
+}
+
+/* ── masthead ─────────────────────────────────────────────────────────────── */
+
+.read__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-3) var(--s-5);
+  padding-bottom: var(--s-5);
+  border-bottom: 1px solid var(--c-line-strong);
+}
+
+.read__name {
+  font-family: var(--f-display);
+  font-size: var(--t-display);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.read__role {
+  margin-top: var(--s-2);
+  max-width: 34em;
+  color: var(--c-muted);
+  font-size: var(--t-s);
+}
+
+.read__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+
+.read__action {
+  padding: 0.5em 0.9em;
+  border: 1px solid var(--c-line-strong);
+  border-radius: 999px;
+  font-size: var(--t-xs);
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    border-color 160ms var(--ease),
+    background 160ms var(--ease);
+}
+
+.read__action--primary {
+  border-color: var(--c-accent);
+  background: var(--c-accent-soft);
+  color: var(--c-accent);
+}
+
+.read__action:hover {
+  border-color: var(--c-fg);
+}
+
+.read__action--primary:hover {
+  border-color: var(--c-accent);
+  background: #ddeae1;
+}
+
+/* ── contact strip and section nav ────────────────────────────────────────── */
+
+.read__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-4);
+  margin-top: var(--s-4);
+  color: var(--c-faint);
+  font-family: var(--f-mono);
+  font-size: var(--t-mono);
+}
+
+.read__meta a {
+  text-decoration: underline;
+  text-decoration-color: var(--c-line-strong);
+  text-underline-offset: 3px;
+}
+
+.read__meta a:hover {
+  text-decoration-color: currentColor;
+}
+
+.read__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-4);
+  margin-top: var(--s-5);
+  font-size: var(--t-xs);
+}
+
+.read__nav a {
+  color: var(--c-muted);
+  border-bottom: 1px solid transparent;
+}
+
+.read__nav a:hover {
+  color: var(--c-fg);
+  border-bottom-color: var(--c-fg);
+}
+
+/* ── sections ─────────────────────────────────────────────────────────────── */
+
+.read__section {
+  padding-top: var(--s-section);
+}
+
+.read__h2 {
+  margin-bottom: var(--s-4);
+  padding-bottom: var(--s-2);
+  border-bottom: 1px solid var(--c-line);
+  color: var(--c-faint);
+  font-family: var(--f-mono);
+  font-size: var(--t-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.read__lead {
+  max-width: 38em;
+  font-size: 1.0625rem;
+}
+
+.read__p {
+  max-width: 38em;
+  margin-top: var(--s-3);
+  color: var(--c-muted);
+}
+
+/* An entry: a role, a degree, a paper, a project. One grid so the dates line up. */
+.entry {
+  padding-top: var(--s-5);
+}
+
+/* Only an entry that opens its section loses the gap. In Research the first entry is a paper
+   that follows two paragraphs, and `:first-of-type` would have pushed it up against them. */
+.read__h2 + .entry {
+  padding-top: 0;
+}
+
+.read__sub {
+  margin-top: var(--s-6);
+  color: var(--c-faint);
+  font-family: var(--f-mono);
+  font-size: var(--t-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.read__sub + .entry {
+  padding-top: var(--s-4);
+}
+
+.entry__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-1) var(--s-4);
+}
+
+.entry__title {
+  font-size: var(--t-h3);
+  font-weight: 600;
+}
+
+.entry__when {
+  color: var(--c-faint);
+  font-family: var(--f-mono);
+  font-size: var(--t-mono);
+  white-space: nowrap;
+}
+
+.entry__where {
+  margin-top: 1px;
+  color: var(--c-muted);
+  font-size: var(--t-s);
+}
+
+.entry__points {
+  margin-top: var(--s-3);
+  display: grid;
+  gap: var(--s-2);
+}
+
+.entry__points li {
+  position: relative;
+  max-width: 40em;
+  padding-left: 1.1em;
+  color: var(--c-muted);
+  font-size: var(--t-s);
+}
+
+.entry__points li::before {
+  content: '';
+  position: absolute;
+  top: 0.62em;
+  left: 0;
+  width: 5px;
+  height: 1px;
+  background: var(--c-line-strong);
+}
+
+/* ── education courses, skills: the same tag list twice ───────────────────── */
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin-top: var(--s-3);
+}
+
+.tags li {
+  padding: 0.25em 0.6em;
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-sm);
+  background: var(--c-sunk);
+  color: var(--c-muted);
+  font-size: var(--t-xs);
+}
+
+.skillset {
+  display: grid;
+  gap: var(--s-4);
+}
+
+.skillset__group {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--s-2) var(--s-4);
+}
+
+.skillset__label {
+  color: var(--c-faint);
+  font-family: var(--f-mono);
+  font-size: var(--t-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.skillset__items {
+  color: var(--c-muted);
+  font-size: var(--t-s);
+}
+
+/* ── publications and projects, which both end in a link ──────────────────── */
+
+.entry__authors {
+  margin-top: var(--s-2);
+  max-width: 40em;
+  color: var(--c-muted);
+  font-size: var(--t-s);
+}
+
+.entry__authors strong {
+  color: var(--c-fg);
+  font-weight: 600;
+}
+
+.entry__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  margin-top: var(--s-3);
+  color: var(--c-accent);
+  font-size: var(--t-s);
+  font-weight: 500;
+}
+
+.entry__link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.entry__doi {
+  display: block;
+  margin-top: var(--s-2);
+  color: var(--c-faint);
+  font-family: var(--f-mono);
+  font-size: var(--t-mono);
+  overflow-wrap: anywhere;
+}
+
+.entry__doi:hover {
+  color: var(--c-accent);
+}
+
+/* ── the way back ─────────────────────────────────────────────────────────── */
+
+.read__foot {
+  margin-top: var(--s-section);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--c-line-strong);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3) var(--s-5);
+  color: var(--c-faint);
+  font-size: var(--t-xs);
+}
+
+.read__foot a {
+  color: var(--c-muted);
+  text-decoration: underline;
+  text-decoration-color: var(--c-line-strong);
+  text-underline-offset: 3px;
+}
+
+.read__foot a:hover {
+  color: var(--c-fg);
+}
+
+/* ── narrow ───────────────────────────────────────────────────────────────── */
+
+@media (max-width: 40rem) {
+  .skillset__group {
+    grid-template-columns: 1fr;
+  }
+
+  .entry__head {
+    gap: var(--s-1);
+  }
+}
+
+/* ── print: this is the page someone hands to a hiring manager ────────────── */
+
+@media print {
+  .read {
+    max-width: none;
+    padding: 0;
+  }
+
+  .read__actions,
+  .read__nav,
+  .read__foot {
+    display: none;
+  }
+
+  .read__section {
+    padding-top: 1.4rem;
+    break-inside: avoid;
+  }
+
+  .entry {
+    break-inside: avoid;
+  }
+
+  .tags li {
+    background: none;
+  }
+
+  .entry__link,
+  .entry__doi {
+    color: inherit;
+  }
+
+  a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    color: #555;
+    font-size: 0.85em;
+  }
+
+  .read__nav a::after,
+  .read__meta a::after {
+    content: '';
+  }
+}

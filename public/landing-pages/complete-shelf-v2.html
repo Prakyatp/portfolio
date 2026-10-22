@@ -1639,17 +1639,84 @@
     }
 
     .editorial-identity strong {
-      font-size: clamp(1.45rem, 2.3vw, 2.3rem);
-      letter-spacing: -0.035em;
+      font-size: clamp(2rem, 3.4vw, 3.4rem);
+      letter-spacing: -0.04em;
     }
 
     .editorial-index {
       grid-column: 3;
     }
 
-    /* The name belongs to the shelf; reading a volume is its own view. */
-    .mode-detail .editorial-header {
+    /* The name belongs to the shelf; reading a volume is its own view. The two links are
+       not part of that — they are the way out for someone who does not want the shelf at
+       all, so they stay put while everything around them fades. */
+    .mode-detail .editorial-identity {
       opacity: 0;
+    }
+
+    .site-actions {
+      gap: 7px;
+      pointer-events: auto;
+    }
+
+    .site-action {
+      color: var(--ink);
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.13em;
+      line-height: 1;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 7px 11px;
+      border: 1px solid color-mix(in srgb, var(--ink) 26%, transparent);
+      border-radius: 999px;
+      white-space: nowrap;
+      transition:
+        color 520ms var(--ease-out),
+        border-color 220ms var(--ease-out),
+        background 220ms var(--ease-out);
+    }
+
+    .site-action .go {
+      display: inline-block;
+      margin-left: 0.35em;
+    }
+
+    .site-action:hover,
+    .site-action:focus-visible {
+      background: color-mix(in srgb, var(--ink) 9%, transparent);
+      border-color: color-mix(in srgb, var(--ink) 52%, transparent);
+    }
+
+    /* The authored sheet rings buttons on focus but not links, and these are the only two
+       links on the shelf. Same ring, so a keyboard user sees one convention. */
+    .site-action:focus-visible {
+      outline: 1px solid var(--ink);
+      outline-offset: 4px;
+    }
+
+    /* The palette line still names the room, but it is the volume's caption, not a link. */
+    .site-palette {
+      margin-top: 2px;
+    }
+
+    .fallback__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 26px;
+    }
+
+    .fallback__actions a {
+      padding: 9px 15px;
+      border: 1px solid rgba(43, 34, 27, 0.3);
+      border-radius: 999px;
+      color: inherit;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-decoration: none;
+      text-transform: uppercase;
     }
 
     .detail-panel {
@@ -1967,6 +2034,16 @@
         text-align: center;
       }
 
+      .site-actions {
+        grid-auto-flow: column;
+        justify-items: center;
+        justify-content: center;
+      }
+
+      .site-palette {
+        display: none;
+      }
+
       .detail-panel {
         top: auto;
         right: 16px;
@@ -2012,10 +2089,15 @@
         <strong>Prakyat Prakash</strong>
         <span>Software engineer · Data pipelines · ML systems</span>
       </div>
-      <div class="editorial-index">
-        <span>Five volumes &middot; 2026</span>
-        <span id="palette-label">Ultramarine · bone · copper</span>
-      </div>
+      <nav class="editorial-index site-actions" aria-label="Other ways to read this">
+        <a class="site-action" href="/read" target="_blank" rel="noopener">
+          Read as a page <span class="go" aria-hidden="true">&#8599;</span>
+        </a>
+        <a class="site-action" href="/resume.pdf" download="Prakyat-Prakash-Resume.pdf">
+          Download r&eacute;sum&eacute; <span class="go" aria-hidden="true">&#8595;</span>
+        </a>
+        <span id="palette-label" class="site-palette">Ultramarine · bone · copper</span>
+      </nav>
     </header>
 
     <div class="pointer-label" id="pointer-label" aria-hidden="true">
@@ -2103,6 +2185,10 @@
         <article class="fallback-book" style="--book-color:#1537a1;--book-foil:#dbe8f1;--book-height:402px"><span>Volume IV</span><strong>Projects</strong></article>
         <article class="fallback-book" style="--book-color:#c83222;--book-foil:#ffd9d2;--book-height:380px"><span>Volume V</span><strong><a href="mailto:prakyat02@gmail.com">Contact</a></strong></article>
       </div>
+      <nav class="fallback__actions" aria-label="Other ways to read this">
+        <a href="/read">Read as a page <span aria-hidden="true">&#8599;</span></a>
+        <a href="/resume.pdf" download="Prakyat-Prakash-Resume.pdf">Download r&eacute;sum&eacute; <span aria-hidden="true">&#8595;</span></a>
+      </nav>
       <div class="fallback__footer">
         <span>MS Computer Science at RIT, 2024 to 2026. Two papers published in 2026 with the Cui Lab. Three projects, all of them live.</span>
         <span>prakyat02@gmail.com &middot; Rochester, New York &middot; open to 2026 SWE and ML roles.</span>
@@ -2260,9 +2346,9 @@
         id: "experience",
         title: "Experience",
         roman: "III",
-        discipline: "Three roles since 2024",
-        note: "Research assistant, AI engineer, AI intern.",
-        deck: "Graduate Research Assistant at RIT, AI Engineer at Handshake AI, and AI Intern at Acinonyx Technologies.",
+        discipline: "Two roles since 2025",
+        note: "Research assistant at RIT, AI engineer on contract.",
+        deck: "Graduate Research Assistant at RIT, and AI Engineer on contract at Acinonyx Technologies.",
         panel: `
           <div class="sheet">
             <article class="role">
@@ -2272,41 +2358,32 @@
               </div>
               <p class="where">Rochester Institute of Technology &middot; Rochester, NY</p>
               <ul>
-                <li>Co-authored 2 papers in computational genomics, in Frontiers in Bioinformatics and Nature Communications.</li>
-                <li>Built a PTM verified-negatives pipeline turning 24.4M peptide-spectrum matches into 361,789 verified phosphosites, cutting trypsin-cleavage bias from 33.2% to 3.6%.</li>
+                <li>Engineered an end-to-end Python ETL pipeline turning 24.4M raw peptide-spectrum matches into 361,789 experimentally verified phosphosites across 35 parallel workers.</li>
+                <li>Built data transformation workflows and structured models to integrate heterogeneous biological datasets, with quality checks, deduplication and FASTA verification.</li>
+                <li>Optimized parallel execution, database integration and reproducible pipelines for downstream machine learning.</li>
               </ul>
             </article>
             <article class="role">
               <div class="role-head">
-                <h3>AI Engineer</h3>
+                <h3>AI Engineer, Contract</h3>
                 <span class="when">Jan 2025 &ndash; Apr 2025</span>
               </div>
-              <p class="where">Handshake AI &middot; Remote, NY</p>
+              <p class="where">Acinonyx Technologies Pvt. Ltd. &middot; Remote, NY</p>
               <ul>
-                <li>Architected an LLM-based RAG pipeline for Python automation, improving code generation accuracy by 25%.</li>
-                <li>Built an LLM evaluation and debugging workflow with LangChain, cutting output error rates by 30%.</li>
-              </ul>
-            </article>
-            <article class="role">
-              <div class="role-head">
-                <h3>AI Intern</h3>
-                <span class="when">Mar 2024 &ndash; Jun 2024</span>
-              </div>
-              <p class="where">Acinonyx Technologies Pvt. Ltd. &middot; Bengaluru, India</p>
-              <ul>
-                <li>Built an AI-driven Flask backend automating license management for 500+ users, cutting manual oversight by 30%.</li>
-                <li>Shipped an ML model predicting license expiry, cutting unexpected downtime by 40%.</li>
+                <li>Developed Python data pipelines for LLM-powered RAG applications, improving code generation accuracy by 25% through retrieval optimization and prompt engineering.</li>
+                <li>Implemented structured retrieval, database integration and automated evaluation workflows with LangChain, cutting model output errors by 30%.</li>
+                <li>Applied SDLC, Agile, Git-based version control and CI/CD to ship scalable AI data solutions.</li>
               </ul>
             </article>
           </div>`,
-        chapters: ["Cui Lab", "Handshake AI", "Acinonyx"],
+        chapters: ["Cui Lab", "Acinonyx", "Pipelines"],
         pages: [
-          { kicker: "THREE ROLES SINCE 2024", title: "Experience", body: "Graduate Research Assistant at RIT. AI Engineer at Handshake AI. AI Intern at Acinonyx Technologies." },
-          { kicker: "MAY 2025 — PRESENT", title: "Graduate Research Assistant", body: "Rochester Institute of Technology. Machine learning for computational genomics in the Cui Lab." },
+          { kicker: "TWO ROLES SINCE 2025", title: "Experience", body: "Graduate Research Assistant at RIT. AI Engineer on contract at Acinonyx Technologies." },
+          { kicker: "MAY 2025 — PRESENT", title: "Graduate Research Assistant", body: "Rochester Institute of Technology. Machine learning and data engineering for computational genomics in the Cui Lab." },
           null,
-          { kicker: "JAN 2025 — APR 2025", title: "AI Engineer", body: "Handshake AI. Retrieval-augmented generation for Python automation, and an evaluation workflow for the models behind it." },
+          { kicker: "JAN 2025 — APR 2025", title: "AI Engineer, Contract", body: "Acinonyx Technologies. Retrieval-augmented generation for Python automation, and the evaluation workflow for the models behind it." },
           null,
-          { kicker: "MAR 2024 — JUN 2024", title: "AI Intern", body: "Acinonyx Technologies, Bengaluru. An AI-driven licensing backend and the model that predicted its expiries." },
+          null,
           null,
           null
         ],
@@ -2325,11 +2402,11 @@
           light: "#fff6ce",
           fill: "#dce37e"
         },
-        theme: "Three roles since 2024",
+        theme: "Two roles since 2025",
         motif: "Directional caret",
         motifKey: "caret",
-        binding: "RIT, Handshake AI, Acinonyx Technologies",
-        format: "Three roles, 2024 to present",
+        binding: "RIT, Acinonyx Technologies",
+        format: "Two roles, 2025 to present",
         width: 0.96,
         height: 1.46,
         depth: 0.24,

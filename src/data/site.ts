@@ -148,32 +148,49 @@ export const roles: Role[] = [
     period: 'May 2025 to present',
     place: 'Rochester, NY',
     points: [
-      'Co-authored 2 research papers in computational genomics: a peer-reviewed publication in Frontiers in Bioinformatics on ML-based bladder cancer biomarker discovery, and a paper in Nature Communications on nucleosome and transcription factor interactions.',
-      'Engineered an end-to-end PTM verified-negatives extraction pipeline processing 24.4M raw peptide-spectrum matches into 361,789 verified phosphosites across 35 parallel workers.',
-      'Built a dual-pass FASTA verification pipeline with tryptic-context filtering, correcting trypsin-cleavage bias and reducing terminal-K over-representation from 33.2% to 3.6%.',
+      'Engineered an end-to-end Python ETL pipeline to extract, clean, transform and validate 24.4M raw peptide-spectrum matches from large biological databases, producing 361,789 experimentally verified phosphosites across 35 parallel workers.',
+      'Developed scalable data transformation workflows and structured data models to integrate heterogeneous biological datasets, with data quality checks, deduplication and FASTA verification for consistency and reliability.',
+      'Designed data engineering solutions for large-scale biological data processing, optimizing parallel execution, database integration and reproducible pipelines for downstream machine learning.',
     ],
   },
   {
-    title: 'AI Engineer',
-    org: 'Handshake AI',
+    title: 'AI Engineer, Contract',
+    org: 'Acinonyx Technologies Pvt. Ltd.',
     period: 'Jan 2025 to Apr 2025',
     place: 'Remote, NY',
     points: [
-      'Architected an LLM-based RAG pipeline for Python automation tasks, improving code generation accuracy by 25% through targeted retrieval optimization and prompt engineering.',
-      'Built a systematic LLM evaluation and debugging workflow using LangChain tooling, cutting output error rates by 30% and enabling faster root-cause diagnosis of model failures.',
-      'Standardized response generation frameworks for chat-based LLM interactions, driving consistent, production-grade execution across automated workflows.',
+      'Developed Python data processing and transformation pipelines for LLM-powered RAG applications, improving code generation accuracy by 25% through retrieval optimization and prompt engineering.',
+      'Implemented structured data retrieval, database integration and automated evaluation workflows using LangChain, reducing model output errors by 30%.',
+      'Applied SDLC principles, Agile methodologies, Git-based version control and CI/CD practices to deliver scalable AI data solutions.',
+    ],
+  },
+];
+
+// Grouped as the resume groups them, so the plain page and the PDF agree.
+export const skills: { group: string; items: string[] }[] = [
+  { group: 'Languages', items: ['Python', 'SQL (PostgreSQL)', 'Java', 'C++', 'JavaScript'] },
+  {
+    group: 'Data engineering',
+    items: [
+      'ETL pipelines',
+      'Data transformation',
+      'Data integration',
+      'Data warehousing',
+      'Data lakes',
+      'Apache Spark',
     ],
   },
   {
-    title: 'AI Intern',
-    org: 'Acinonyx Technologies Pvt. Ltd.',
-    period: 'Mar 2024 to Jun 2024',
-    place: 'Bengaluru, India',
-    points: [
-      'Built an AI-driven backend service with Flask and REST APIs to automate license management, cutting manual oversight by 30% and streamlining renewals for 500+ users.',
-      'Developed an ML model to predict license-expiration patterns, enabling real-time tracking and cutting unexpected service downtime by 40%.',
-      'Applied AI-powered analytics on transactional data to trigger automated payment reminders, improving processing efficiency and driving sales growth.',
-    ],
+    group: 'Cloud and databases',
+    items: ['AWS (S3, DynamoDB, Lambda, API Gateway)', 'Neo4j', 'PostgreSQL'],
+  },
+  {
+    group: 'Software engineering',
+    items: ['SDLC', 'Agile', 'Docker', 'Git', 'CI/CD', 'REST APIs'],
+  },
+  {
+    group: 'Machine learning',
+    items: ['PyTorch', 'TensorFlow', 'Scikit-learn', 'Pandas', 'NumPy', 'LangChain', 'RAG'],
   },
 ];
 
