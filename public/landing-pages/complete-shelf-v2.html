@@ -931,6 +931,10 @@
       cursor: grab;
     }
 
+    .mode-detail #scene.has-page-link {
+      cursor: pointer;
+    }
+
     .mode-detail #scene.has-closed-book-hover {
       cursor: pointer;
     }
@@ -1617,6 +1621,376 @@
       }
     }
 
+    /* ── V3: five sections, one per volume ──────────────────────────────────
+       The name sits in the middle of the masthead, the book gives up room to
+       the panel, and the panel never scrolls: everything a section has to say
+       is on screen at once, stepped down by --panel-scale until it fits. */
+
+    .editorial-header {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: start;
+    }
+
+    .editorial-identity {
+      grid-column: 2;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .editorial-identity strong {
+      font-size: clamp(1.45rem, 2.3vw, 2.3rem);
+      letter-spacing: -0.035em;
+    }
+
+    .editorial-index {
+      grid-column: 3;
+    }
+
+    /* The name belongs to the shelf; reading a volume is its own view. */
+    .mode-detail .editorial-header {
+      opacity: 0;
+    }
+
+    .detail-panel {
+      top: 50%;
+      right: clamp(24px, 3vw, 58px);
+      width: min(46vw, 640px);
+      height: auto;
+      max-height: min(82vh, 880px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .detail-title {
+      font-size: clamp(2.4rem, 4.4vw, 4.4rem);
+      line-height: 0.88;
+    }
+
+    .detail-body {
+      --panel-scale: 1;
+      flex: 0 1 auto;
+      min-height: 0;
+      margin-top: 1.1rem;
+      overflow: hidden;
+      font-size: calc(16px * var(--panel-scale));
+      line-height: 1.45;
+    }
+
+    .sheet {
+      display: flex;
+      flex-direction: column;
+      gap: 0.95em;
+    }
+
+    .sheet h3 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 1.12em;
+      font-weight: 400;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+    }
+
+    .sheet p {
+      margin: 0;
+    }
+
+    .kicker {
+      color: var(--ink-soft);
+      font-size: 0.68em;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+
+    .lede {
+      max-width: 46ch;
+      font-size: 0.9em;
+      line-height: 1.5;
+    }
+
+    .when,
+    .where,
+    .stack {
+      color: var(--ink-soft);
+      font-size: 0.8em;
+      line-height: 1.4;
+    }
+
+    .when {
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .go {
+      display: inline-block;
+      transition: transform 180ms var(--ease-out);
+    }
+
+    /* ── education ─────────────────────────────────────────────────────── */
+
+    .edu-head {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: start;
+      gap: 0.85em;
+    }
+
+    .edu-mark {
+      display: grid;
+      width: 2.9em;
+      height: 2.9em;
+      border: 1px solid color-mix(in srgb, var(--ink) 34%, transparent);
+      color: var(--accent);
+      font-size: 0.8em;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      place-items: center;
+    }
+
+    .course-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.35em 1.2em;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .course-list li {
+      padding-left: 0.95em;
+      position: relative;
+      font-size: 0.92em;
+      line-height: 1.35;
+    }
+
+    .course-list li::before {
+      position: absolute;
+      top: 0.62em;
+      left: 0;
+      width: 0.42em;
+      height: 1px;
+      background: var(--accent);
+      content: "";
+    }
+
+    /* ── research ──────────────────────────────────────────────────────── */
+
+    .paper {
+      display: grid;
+      gap: 0.3em;
+      padding: 0.85em 1em;
+      border: 1px solid color-mix(in srgb, var(--ink) 24%, transparent);
+      color: inherit;
+      text-decoration: none;
+      transition: border-color 200ms ease, background 200ms ease;
+    }
+
+    .paper:hover,
+    .paper:focus-visible {
+      border-color: color-mix(in srgb, var(--ink) 58%, transparent);
+      background: color-mix(in srgb, var(--ink) 7%, transparent);
+    }
+
+    .paper:hover .go {
+      transform: translate(2px, -2px);
+    }
+
+    .paper strong {
+      font-family: var(--serif);
+      font-size: 1.02em;
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: -0.015em;
+    }
+
+    .paper-meta {
+      color: var(--ink-soft);
+      font-size: 0.76em;
+      line-height: 1.4;
+    }
+
+    .paper-meta b {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .paper-where {
+      font-size: 0.76em;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* ── experience ────────────────────────────────────────────────────── */
+
+    .role {
+      display: grid;
+      gap: 0.25em;
+      padding-top: 0.8em;
+      border-top: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+    }
+
+    .role:first-child {
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    .role-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.9em;
+    }
+
+    .role ul {
+      display: grid;
+      gap: 0.3em;
+      margin: 0.35em 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .role li {
+      position: relative;
+      padding-left: 0.95em;
+      font-size: 0.86em;
+      line-height: 1.38;
+    }
+
+    .role li::before {
+      position: absolute;
+      top: 0.6em;
+      left: 0;
+      width: 0.42em;
+      height: 1px;
+      background: color-mix(in srgb, var(--ink) 52%, transparent);
+      content: "";
+    }
+
+    /* ── projects: the way in comes before the description ─────────────── */
+
+    .proj {
+      display: grid;
+      gap: 0.42em;
+      padding-top: 0.85em;
+      border-top: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+    }
+
+    .proj:first-child {
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    .proj p {
+      max-width: 48ch;
+      font-size: 0.86em;
+      line-height: 1.42;
+    }
+
+    .go-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5em;
+      justify-self: start;
+      padding: 0.5em 1.05em;
+      border: 1px solid color-mix(in srgb, var(--ink) 46%, transparent);
+      border-radius: 999px;
+      color: inherit;
+      font-family: var(--serif);
+      font-size: 1.02em;
+      line-height: 1.1;
+      text-decoration: none;
+      transition: color 200ms ease, background 200ms ease, border-color 200ms ease;
+    }
+
+    .go-btn:hover,
+    .go-btn:focus-visible {
+      color: var(--paper);
+      border-color: var(--ink);
+      background: var(--ink);
+    }
+
+    .go-btn:hover .go {
+      transform: translate(2px, -2px);
+    }
+
+    /* ── contact ───────────────────────────────────────────────────────── */
+
+    .sheet--contact {
+      gap: 1.15em;
+    }
+
+    .mail {
+      justify-self: start;
+      color: inherit;
+      font-family: var(--serif);
+      font-size: 1.9em;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      text-decoration: none;
+      border-bottom: 1px solid color-mix(in srgb, var(--ink) 38%, transparent);
+      transition: border-color 200ms ease;
+    }
+
+    .mail:hover {
+      border-bottom-color: var(--ink);
+    }
+
+    .social {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6em;
+    }
+
+    .social .go-btn {
+      font-family: var(--mono);
+      font-size: 0.78em;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ── narrow ────────────────────────────────────────────────────────── */
+
+    @media (max-width: 880px) {
+      .editorial-header {
+        grid-template-columns: 1fr;
+        justify-items: center;
+      }
+
+      .editorial-identity,
+      .editorial-index {
+        grid-column: 1;
+        justify-items: center;
+        text-align: center;
+      }
+
+      .detail-panel {
+        top: auto;
+        right: 16px;
+        bottom: 84px;
+        left: 16px;
+        width: auto;
+        height: min(56vh, 460px);
+        max-height: none;
+        transform: none;
+      }
+
+      .mode-detail .detail-panel {
+        transform: none;
+      }
+
+      .detail-title {
+        font-size: clamp(2rem, 9vw, 3rem);
+      }
+
+      .course-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
   </style>
   <script type="importmap">
     {
@@ -1646,15 +2020,15 @@
 
     <div class="pointer-label" id="pointer-label" aria-hidden="true">
       <span id="pointer-label-index">Volume 01</span>
-      <strong id="pointer-label-title">Hydration Break</strong>
+      <strong id="pointer-label-title">Education</strong>
     </div>
 
     <section class="browse-ui" id="browse-ui" aria-label="Shelf navigation">
       <div class="selection">
         <span class="counter" id="counter">01 / 05</span>
         <div class="selection__copy">
-          <h1 class="selection__title" id="selection-title">Hydration Break</h1>
-          <p class="selection__note" id="selection-note">What a two-minute pause does to attacking pressure.</p>
+          <h1 class="selection__title" id="selection-title">Education</h1>
+          <p class="selection__note" id="selection-note">Master of Science, Computer Science. Aug 2024 to Dec 2026.</p>
         </div>
       </div>
 
@@ -1686,29 +2060,9 @@
       <button class="close-button" id="close-detail" type="button" aria-label="Return volume to shelf">
         <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 4 8 8M12 4l-8 8"></path></svg>
       </button>
-      <p class="eyebrow" id="detail-eyebrow">Volume I · Match data</p>
-      <h2 class="detail-title" id="detail-title">Hydration Break</h2>
-      <p class="detail-deck" id="detail-deck">
-        WC2026 Hydration Break Analyzer. Scrapes every World Cup match from ESPN and measures attacking pressure either side of the whistle.
-      </p>
-      <dl class="meta-list">
-        <div>
-          <dt id="detail-label-0">Built with</dt>
-          <dd id="detail-binding">Python · ESPN API · Next.js · Groq · GitHub Actions</dd>
-        </div>
-        <div>
-          <dt id="detail-label-1">Scale</dt>
-          <dd id="detail-format">Every WC2026 match · rebuilt daily</dd>
-        </div>
-        <div>
-          <dt id="detail-label-2">Finding</dt>
-          <dd id="detail-theme">Pressing teams lose momentum across the break</dd>
-        </div>
-        <div>
-          <dt id="detail-label-3">Opens</dt>
-          <dd id="detail-motif">Live dashboard</dd>
-        </div>
-      </dl>
+      <p class="eyebrow" id="detail-eyebrow">Volume I · Rochester Institute of Technology</p>
+      <h2 class="detail-title" id="detail-title">Education</h2>
+      <div class="detail-body" id="detail-body"></div>
       <div class="page-navigation" role="group" aria-label="Browse sample pages">
         <button class="page-button" id="previous-page" type="button" aria-label="Previous sample page" disabled>
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m10.5 3.5-4.5 4.5 4.5 4.5"></path></svg>
@@ -1726,7 +2080,6 @@
         <div class="detail-buttons">
           <button class="text-button reset-button" id="toggle-book" type="button" aria-pressed="false">Open book</button>
           <button class="text-button reset-button" id="reset-view" type="button">Reset view</button>
-          <a class="text-button reset-button" id="open-source" href="#" target="_blank" rel="noopener">Live dashboard</a>
         </div>
       </div>
     </aside>
@@ -1737,22 +2090,22 @@
       <div class="fallback__header">
         <div>
           <p class="fallback__kicker">Prakyat Prakash · Static catalog</p>
-          <h2 id="fallback-title">Three projects, two papers.</h2>
+          <h2 id="fallback-title">Education, research, experience, projects.</h2>
         </div>
         <p class="fallback__status" id="fallback-status">
           The complete catalog remains readable while the interactive shelf is prepared.
         </p>
       </div>
       <div class="fallback__grid" aria-label="Five conceptual hardcovers">
-        <article class="fallback-book" style="--book-color:#182a43;--book-foil:#c87046;--book-height:392px"><span>Volume I</span><strong><a href="https://prakyatp.github.io/wc2026-break-analyzer/">Hydration Break</a></strong></article>
-        <article class="fallback-book" style="--book-color:#c24d24;--book-foil:#efc16d;--book-height:372px"><span>Volume II</span><strong><a href="https://prakyatp.github.io/PTM_Negatives_Extraction/">PTM Negatives</a></strong></article>
-        <article class="fallback-book" style="--book-color:#afc400;--book-foil:#171a16;--book-height:358px"><span>Volume III</span><strong><a href="https://github.com/Prakyatp/carebridge">CareBridge</a></strong></article>
-        <article class="fallback-book" style="--book-color:#1537a1;--book-foil:#dbe8f1;--book-height:402px"><span>Volume IV</span><strong><a href="https://doi.org/10.3389/fbinf.2026.1794098">Bladder Cancer</a></strong></article>
-        <article class="fallback-book" style="--book-color:#c83222;--book-foil:#efb0aa;--book-height:380px"><span>Volume V</span><strong><a href="https://doi.org/10.1038/s41467-026-74448-4">DNA Codes</a></strong></article>
+        <article class="fallback-book" style="--book-color:#182a43;--book-foil:#c87046;--book-height:392px"><span>Volume I</span><strong>Education</strong></article>
+        <article class="fallback-book" style="--book-color:#c24d24;--book-foil:#efc16d;--book-height:372px"><span>Volume II</span><strong>Research</strong></article>
+        <article class="fallback-book" style="--book-color:#afc400;--book-foil:#171a16;--book-height:358px"><span>Volume III</span><strong>Experience</strong></article>
+        <article class="fallback-book" style="--book-color:#1537a1;--book-foil:#dbe8f1;--book-height:402px"><span>Volume IV</span><strong>Projects</strong></article>
+        <article class="fallback-book" style="--book-color:#c83222;--book-foil:#efb0aa;--book-height:380px"><span>Volume V</span><strong><a href="mailto:prakyat02@gmail.com">Contact</a></strong></article>
       </div>
       <div class="fallback__footer">
-        <span>Three projects and two peer-reviewed papers by Prakyat Prakash. Bindings, motifs and cover artworks are an editorial conceit; the work is real.</span>
-        <span>Each title links to the live dashboard, the repository, or the published paper.</span>
+        <span>MS Computer Science at RIT, 2024 to 2026. Two papers published in 2026 with the Cui Lab. Three projects, all of them live.</span>
+        <span>prakyat02@gmail.com &middot; Rochester, New York &middot; open to 2026 SWE and ML roles.</span>
       </div>
     </section>
 
@@ -1776,27 +2129,48 @@
        authored Working Volumes document, untouched. */
     const COLLECTION = "PRAKYAT PRAKASH";
 
+    /* Five volumes, one per section of the CV. Each carries the markup for its own
+       right-hand panel — the panel is sized to fit rather than scrolled — and the
+       eight interior pages it prints when the book is opened. */
     const BOOKS = [
       {
-        id: "hydration-break",
-        title: "Hydration Break",
+        id: "education",
+        title: "Education",
         roman: "I",
-        discipline: "Match data",
-        note: "What a two-minute pause does to attacking pressure.",
-        deck: "WC2026 Hydration Break Analyzer. Scrapes every World Cup match from ESPN, finds the exact hydration-break timestamps, and measures attacking pressure either side of the whistle. Pressing teams lose momentum across the break; the teams being pressed gain it. It rebuilds itself daily.",
-        href: "https://prakyatp.github.io/wc2026-break-analyzer/",
-        opens: "Live dashboard",
-        meta: [
-          ["Built with", "Python · ESPN API · Next.js · Groq · GitHub Actions"],
-          ["Scale", "Every WC2026 match · rebuilt daily"],
-          ["Finding", "Pressing teams lose momentum across the break"],
-          ["Opens", "Live dashboard"]
+        discipline: "Rochester Institute of Technology",
+        note: "Master of Science, Computer Science. Aug 2024 to Dec 2026.",
+        deck: "Master of Science in Computer Science at the Rochester Institute of Technology, August 2024 to December 2026.",
+        panel: `
+          <div class="sheet sheet--edu">
+            <div class="edu-head">
+              <span class="edu-mark">RIT</span>
+              <div>
+                <h3>Rochester Institute of Technology</h3>
+                <p class="when">Aug 2024 &ndash; Dec 2026</p>
+                <p class="lede">Master of Science, Computer Science &middot; Rochester, NY</p>
+              </div>
+            </div>
+            <p class="kicker">Relevant coursework</p>
+            <ul class="course-list">
+              <li>Data Structures &amp; Algorithms</li>
+              <li>Computer Architecture</li>
+              <li>Machine Learning</li>
+              <li>Foundations of AI</li>
+              <li>Big Data</li>
+              <li>Advanced Computer Vision</li>
+            </ul>
+          </div>`,
+        chapters: ["Rochester", "Coursework", "Degree"],
+        pages: [
+          { kicker: "ROCHESTER INSTITUTE OF TECHNOLOGY", title: "Education", body: "Master of Science, Computer Science. August 2024 to December 2026, Rochester, New York." },
+          { kicker: "CHAPTER 01", title: "Rochester", body: "Two years of graduate coursework alongside research in the Cui Lab." },
+          null,
+          { kicker: "CHAPTER 02", title: "Coursework", body: "Data Structures & Algorithms. Computer Architecture. Machine Learning. Foundations of AI. Big Data. Advanced Computer Vision." },
+          null,
+          { kicker: "CHAPTER 03", title: "Degree", body: "MS Computer Science, expected December 2026." },
+          null,
+          null
         ],
-        binding: "Python, ESPN API, Next.js, Groq and GitHub Actions",
-        format: "Every WC2026 match, rebuilt daily",
-        theme: "Momentum across the whistle",
-        motif: "Interlaced paths",
-        motifKey: "paths",
         paletteLabel: "Ultramarine · bone · copper",
         color: "#182a43",
         foil: "#c87046",
@@ -1812,32 +2186,49 @@
           light: "#f4d7b9",
           fill: "#9fb3c9"
         },
+        theme: "Graduate study at RIT",
+        motif: "Nested brackets",
+        motifKey: "brackets",
+        binding: "Master of Science, Computer Science",
+        format: "Rochester Institute of Technology, 2024 to 2026",
         width: 1.04,
         height: 1.6,
         depth: 0.25,
-        chapters: ["Scrape", "Break window", "Pressure delta"],
         seed: 11
       },
       {
-        id: "ptm-negatives",
-        title: "PTM Negatives",
+        id: "research",
+        title: "Research",
         roman: "II",
-        discipline: "Proteomics pipelines",
-        note: "The field calls every unreported residue a negative. This one checks.",
-        deck: "PTM Dataset Extraction Pipeline. Rebuilt the training data for phosphorylation site prediction: 24.4M peptide-spectrum matches turned into 361,789 verified sites, with a dual-pass FASTA check and tryptic-context filtering that cut a trypsin sampling bias from 33.2% to 3.6%.",
-        href: "https://prakyatp.github.io/PTM_Negatives_Extraction/",
-        opens: "Live dashboard",
-        meta: [
-          ["Built with", "Python · Pandas · NumPy · UniProt"],
-          ["Scale", "24.4M PSMs · 361,789 verified sites"],
-          ["Finding", "Terminal-K over-representation, 33.2% to 3.6%"],
-          ["Opens", "Live dashboard"]
+        discipline: "Computational biology",
+        note: "ML and deep learning on life science and genomics.",
+        deck: "I work with machine learning and deep learning on life science and genomics — computational biology. Two papers published in 2026 with the Cui Lab at RIT.",
+        panel: `
+          <div class="sheet">
+            <p class="lede">I work with machine learning and deep learning on life science and genomics &mdash; computational biology.</p>
+            <p class="kicker">Published, 2026</p>
+            <a class="paper" href="https://doi.org/10.3389/fbinf.2026.1794098" target="_blank" rel="noopener">
+              <strong>Machine learning-based determination of sex-related bladder cancer biomarkers</strong>
+              <span class="paper-meta">Pizzi, J.R., Adhikari, I., <b>Prakash, P.</b>, Miyamoto, H., and Cui, F.</span>
+              <span class="paper-where">Frontiers in Bioinformatics &middot; 2026 <span class="go">&#8599;</span></span>
+            </a>
+            <a class="paper" href="https://doi.org/10.1038/s41467-026-74448-4" target="_blank" rel="noopener">
+              <strong>Intrinsic DNA codes govern distinct modes of nucleosome and transcription factor interactions</strong>
+              <span class="paper-meta">Carson, C.W., Nagalakshmi, S.U., Adhikari, I., Freewoman, J.M., Pizzi, J.R., <b>Prakash, P.</b>, and Cui, F.</span>
+              <span class="paper-where">Nature Communications &middot; 2026 <span class="go">&#8599;</span></span>
+            </a>
+          </div>`,
+        chapters: ["Bladder cancer", "DNA codes", "Methods"],
+        pages: [
+          { kicker: "CUI LAB · RIT", title: "Research", body: "Machine learning and deep learning on life science and genomics. Two papers published in 2026." },
+          { kicker: "PAPER 01 · FRONTIERS IN BIOINFORMATICS, 2026", title: "Machine learning-based determination of sex-related bladder cancer biomarkers", body: "Pizzi, J.R., Adhikari, I., Prakash, P., Miyamoto, H., and Cui, F.", href: "https://doi.org/10.3389/fbinf.2026.1794098" },
+          null,
+          { kicker: "PAPER 02 · NATURE COMMUNICATIONS, 2026", title: "Intrinsic DNA codes govern distinct modes of nucleosome and transcription factor interactions", body: "Carson, C.W., Nagalakshmi, S.U., Adhikari, I., Freewoman, J.M., Pizzi, J.R., Prakash, P., and Cui, F.", href: "https://doi.org/10.1038/s41467-026-74448-4" },
+          null,
+          { kicker: "CHAPTER 03", title: "Methods", body: "Rigorous extraction pipelines for post-translational modification data, and deep learning models for 3D chromatin organisation." },
+          null,
+          null
         ],
-        binding: "Python, Pandas, NumPy and UniProt, across 35 parallel workers",
-        format: "24.4M peptide-spectrum matches, five repositories",
-        theme: "Verified negatives, not assumed ones",
-        motif: "Nested brackets",
-        motifKey: "brackets",
         paletteLabel: "Burnt orange · cream · burgundy",
         color: "#c24d24",
         foil: "#efc16d",
@@ -1853,32 +2244,70 @@
           light: "#ffd19a",
           fill: "#dc8c6b"
         },
+        theme: "Computational biology",
+        motif: "Interlaced paths",
+        motifKey: "paths",
+        binding: "Cui Lab, Rochester Institute of Technology",
+        format: "Two papers, 2026",
         width: 1.1,
         height: 1.52,
         depth: 0.3,
-        chapters: ["Extraction", "Dual-pass FASTA", "Bias correction"],
         seed: 22
       },
       {
-        id: "carebridge",
-        title: "CareBridge",
+        id: "experience",
+        title: "Experience",
         roman: "III",
-        discipline: "Retrieval systems",
-        note: "What a procedure costs, and what it costs you to travel for it.",
-        deck: "A cost navigator for people deciding whether to have a procedure done abroad. Pricing, treatment length and recovery time structured across ten countries and thirty procedures, with a retrieval chatbot over it and the patient journey modelled as a graph.",
-        href: "https://github.com/Prakyatp/carebridge",
-        opens: "Repository",
-        meta: [
-          ["Built with", "Python · RAG · Neo4j · LLMs · Vector DB"],
-          ["Scale", "10 countries · 30 procedures"],
-          ["Finding", "The patient journey reads better as a graph"],
-          ["Opens", "Repository"]
+        discipline: "Three roles since 2024",
+        note: "Research assistant, AI engineer, AI intern.",
+        deck: "Graduate Research Assistant at RIT, AI Engineer at Handshake AI, and AI Intern at Acinonyx Technologies.",
+        panel: `
+          <div class="sheet">
+            <article class="role">
+              <div class="role-head">
+                <h3>Graduate Research Assistant, Machine Learning</h3>
+                <span class="when">May 2025 &ndash; present</span>
+              </div>
+              <p class="where">Rochester Institute of Technology &middot; Rochester, NY</p>
+              <ul>
+                <li>Co-authored 2 papers in computational genomics, in Frontiers in Bioinformatics and Nature Communications.</li>
+                <li>Built a PTM verified-negatives pipeline turning 24.4M peptide-spectrum matches into 361,789 verified phosphosites, cutting trypsin-cleavage bias from 33.2% to 3.6%.</li>
+              </ul>
+            </article>
+            <article class="role">
+              <div class="role-head">
+                <h3>AI Engineer</h3>
+                <span class="when">Jan 2025 &ndash; Apr 2025</span>
+              </div>
+              <p class="where">Handshake AI &middot; Remote, NY</p>
+              <ul>
+                <li>Architected an LLM-based RAG pipeline for Python automation, improving code generation accuracy by 25%.</li>
+                <li>Built an LLM evaluation and debugging workflow with LangChain, cutting output error rates by 30%.</li>
+              </ul>
+            </article>
+            <article class="role">
+              <div class="role-head">
+                <h3>AI Intern</h3>
+                <span class="when">Mar 2024 &ndash; Jun 2024</span>
+              </div>
+              <p class="where">Acinonyx Technologies Pvt. Ltd. &middot; Bengaluru, India</p>
+              <ul>
+                <li>Built an AI-driven Flask backend automating license management for 500+ users, cutting manual oversight by 30%.</li>
+                <li>Shipped an ML model predicting license expiry, cutting unexpected downtime by 40%.</li>
+              </ul>
+            </article>
+          </div>`,
+        chapters: ["Cui Lab", "Handshake AI", "Acinonyx"],
+        pages: [
+          { kicker: "THREE ROLES SINCE 2024", title: "Experience", body: "Graduate Research Assistant at RIT. AI Engineer at Handshake AI. AI Intern at Acinonyx Technologies." },
+          { kicker: "MAY 2025 — PRESENT", title: "Graduate Research Assistant", body: "Rochester Institute of Technology. Machine learning for computational genomics in the Cui Lab." },
+          null,
+          { kicker: "JAN 2025 — APR 2025", title: "AI Engineer", body: "Handshake AI. Retrieval-augmented generation for Python automation, and an evaluation workflow for the models behind it." },
+          null,
+          { kicker: "MAR 2024 — JUN 2024", title: "AI Intern", body: "Acinonyx Technologies, Bengaluru. An AI-driven licensing backend and the model that predicted its expiries." },
+          null,
+          null
         ],
-        binding: "Python, retrieval-augmented generation, Neo4j and a vector store",
-        format: "Ten countries, thirty procedures",
-        theme: "Cost, recovery and the journey between them",
-        motif: "Connected modules",
-        motifKey: "modules",
         paletteLabel: "Citron · ink · off-white",
         color: "#afc400",
         foil: "#171a16",
@@ -1894,32 +2323,52 @@
           light: "#fff6ce",
           fill: "#dce37e"
         },
+        theme: "Three roles since 2024",
+        motif: "Directional caret",
+        motifKey: "caret",
+        binding: "RIT, Handshake AI, Acinonyx Technologies",
+        format: "Three roles, 2024 to present",
         width: 0.96,
         height: 1.46,
         depth: 0.24,
-        chapters: ["Corpus", "Graph", "Retrieval"],
         seed: 33
       },
       {
-        id: "bladder-cancer",
-        title: "Bladder Cancer",
+        id: "projects",
+        title: "Projects",
         roman: "IV",
-        discipline: "Biomarker discovery",
-        note: "Sex-related signal that survives contact with a real cohort.",
-        deck: "Machine learning-based determination of sex-related bladder cancer biomarkers. Peer-reviewed and published in Frontiers in Bioinformatics, 2026, with the Cui Lab at RIT.",
-        href: "https://doi.org/10.3389/fbinf.2026.1794098",
-        opens: "Read the paper",
-        meta: [
-          ["Authors", "Pizzi, J.R., Adhikari, I., Prakash, P., Miyamoto, H., and Cui, F."],
-          ["Journal", "Frontiers in Bioinformatics · 2026"],
-          ["Subject", "Sex-related bladder cancer biomarkers"],
-          ["Opens", "doi.org/10.3389/fbinf.2026.1794098"]
+        discipline: "Three things that run",
+        note: "Each one opens the live site, not a write-up.",
+        deck: "Three projects, each of which opens the thing itself: a live dashboard, a live dashboard, and a repository.",
+        panel: `
+          <div class="sheet">
+            <article class="proj">
+              <a class="go-btn" href="https://prakyatp.github.io/wc2026-break-analyzer/" target="_blank" rel="noopener">WC2026 Hydration Break Analyzer <span class="go">&#8599;</span></a>
+              <p>Scrapes every World Cup match from ESPN, finds the exact hydration-break timestamps, and measures attacking pressure either side of the whistle. Pressing teams lose momentum across the break; the teams being pressed gain it. Rebuilds itself daily.</p>
+              <p class="stack">Python &middot; ESPN API &middot; Next.js &middot; Groq &middot; GitHub Actions</p>
+            </article>
+            <article class="proj">
+              <a class="go-btn" href="https://prakyatp.github.io/PTM_Negatives_Extraction/" target="_blank" rel="noopener">PTM Dataset Extraction Pipeline <span class="go">&#8599;</span></a>
+              <p>Rebuilt the training data for phosphorylation site prediction. The field calls every unreported residue a negative; this verifies them instead, turning 24.4M peptide-spectrum matches into 361,789 checked sites and cutting a trypsin sampling bias from 33.2% to 3.6%.</p>
+              <p class="stack">Python &middot; Pandas &middot; NumPy &middot; UniProt</p>
+            </article>
+            <article class="proj">
+              <a class="go-btn" href="https://github.com/Prakyatp/carebridge" target="_blank" rel="noopener">CareBridge <span class="go">&#8599;</span></a>
+              <p>A cost navigator for people deciding whether to have a procedure done abroad. Pricing, treatment length and recovery time across ten countries and thirty procedures, with a retrieval chatbot over it and the patient journey modelled as a graph.</p>
+              <p class="stack">Python &middot; RAG &middot; Neo4j &middot; LLMs &middot; Vector DB</p>
+            </article>
+          </div>`,
+        chapters: ["WC2026", "PTM Negatives", "CareBridge"],
+        pages: [
+          { kicker: "THREE THINGS THAT RUN", title: "Projects", body: "Every page in this volume opens the live site. Click a page to go there." },
+          { kicker: "PROJECT 01 · LIVE DASHBOARD", title: "WC2026 Hydration Break Analyzer", image: "/assets/preview/wc2026.jpg", href: "https://prakyatp.github.io/wc2026-break-analyzer/" },
+          { kicker: "PROJECT 02 · LIVE DASHBOARD", title: "PTM Dataset Extraction Pipeline", image: "/assets/preview/ptm.jpg", href: "https://prakyatp.github.io/PTM_Negatives_Extraction/" },
+          { kicker: "PROJECT 03 · REPOSITORY", title: "CareBridge", image: "/assets/preview/carebridge.jpg", href: "https://github.com/Prakyatp/carebridge" },
+          { kicker: "PROJECT 01", title: "Momentum across the whistle", body: "Pressing teams lose momentum across the break; the teams being pressed gain it.", href: "https://prakyatp.github.io/wc2026-break-analyzer/" },
+          { kicker: "PROJECT 02", title: "Verified, not assumed", body: "24.4M peptide-spectrum matches into 361,789 checked sites.", href: "https://prakyatp.github.io/PTM_Negatives_Extraction/" },
+          null,
+          null
         ],
-        binding: "Pizzi, J.R., Adhikari, I., Prakash, P., Miyamoto, H., and Cui, F.",
-        format: "Frontiers in Bioinformatics, 2026",
-        theme: "Which signals survive a real cohort",
-        motif: "Suspended orbits",
-        motifKey: "orbits",
         paletteLabel: "Cobalt · sky · silver",
         color: "#1537a1",
         foil: "#dbe8f1",
@@ -1935,32 +2384,45 @@
           light: "#e5edf2",
           fill: "#5f85dc"
         },
-        width: 1.06,
-        height: 1.64,
+        theme: "Three things that run",
+        motif: "Connected modules",
+        motifKey: "modules",
+        binding: "Python, Next.js, Neo4j and retrieval",
+        format: "Three projects, all live",
+        width: 1.08,
+        height: 1.66,
         depth: 0.27,
-        chapters: ["Cohort", "Model", "Biomarkers"],
         seed: 44
       },
       {
-        id: "dna-codes",
-        title: "DNA Codes",
+        id: "contact",
+        title: "Contact",
         roman: "V",
-        discipline: "Computational genomics",
-        note: "How the sequence itself decides what binds to it.",
-        deck: "Intrinsic DNA codes govern distinct modes of nucleosome and transcription factor interactions. Published in Nature Communications, 2026, with the Cui Lab at RIT.",
-        href: "https://doi.org/10.1038/s41467-026-74448-4",
-        opens: "Read the paper",
-        meta: [
-          ["Authors", "Carson, C.W., Nagalakshmi, S.U., Adhikari, I., Freewoman, J.M., Pizzi, J.R., Prakash, P., and Cui, F."],
-          ["Journal", "Nature Communications · 2026"],
-          ["Subject", "Nucleosome and transcription factor interactions"],
-          ["Opens", "doi.org/10.1038/s41467-026-74448-4"]
+        discipline: "Open to 2026 SWE and ML roles",
+        note: "Rochester, NY. Open to 2026 SWE and ML roles.",
+        deck: "Open to 2026 software engineering and machine learning roles. Based in Rochester, New York.",
+        panel: `
+          <div class="sheet sheet--contact">
+            <p class="kicker">Open to 2026 SWE and ML roles</p>
+            <a class="mail" href="mailto:prakyat02@gmail.com">prakyat02@gmail.com</a>
+            <div class="social">
+              <a class="go-btn" href="https://www.linkedin.com/in/prakyatp" target="_blank" rel="noopener">LinkedIn <span class="go">&#8599;</span></a>
+              <a class="go-btn" href="https://github.com/Prakyatp" target="_blank" rel="noopener">GitHub <span class="go">&#8599;</span></a>
+              <a class="go-btn" href="/resume.pdf" target="_blank" rel="noopener">Resume <span class="go">&#8599;</span></a>
+            </div>
+            <p class="lede">Based in Rochester, New York.</p>
+          </div>`,
+        chapters: ["Email", "Elsewhere", "Colophon"],
+        pages: [
+          { kicker: "OPEN TO 2026 SWE AND ML ROLES", title: "Contact", body: "prakyat02@gmail.com — Rochester, New York." },
+          { kicker: "CHAPTER 01", title: "Email", body: "prakyat02@gmail.com", href: "mailto:prakyat02@gmail.com" },
+          null,
+          { kicker: "CHAPTER 02", title: "Elsewhere", body: "linkedin.com/in/prakyatp — github.com/Prakyatp", href: "https://github.com/Prakyatp" },
+          null,
+          { kicker: "CHAPTER 03", title: "Colophon", body: "Rochester, New York. Open to 2026 software engineering and machine learning roles." },
+          null,
+          null
         ],
-        binding: "Carson, C.W., Nagalakshmi, S.U., Adhikari, I., Freewoman, J.M., Pizzi, J.R., Prakash, P., and Cui, F.",
-        format: "Nature Communications, 2026",
-        theme: "Intrinsic codes in the sequence",
-        motif: "Drafting compass",
-        motifKey: "compass",
         paletteLabel: "Vermilion · plum · blush",
         color: "#c83222",
         foil: "#efb0aa",
@@ -1976,10 +2438,14 @@
           light: "#ffd1bc",
           fill: "#d66d66"
         },
+        theme: "Open to 2026 roles",
+        motif: "Drafting compass",
+        motifKey: "compass",
+        binding: "prakyat02@gmail.com",
+        format: "Rochester, New York",
         width: 1,
         height: 1.55,
         depth: 0.22,
-        chapters: ["Sequence", "Nucleosome", "Binding modes"],
         seed: 55
       }
     ];
@@ -2008,6 +2474,30 @@
     woodTextureImage.src = WOOD_TEXTURE_DATA;
     let woodTextureReady = false;
 
+    /* Screenshots the project pages print. Same origin, so they can be drawn
+       into a page canvas without tainting it. */
+    const pagePlates = new Map();
+
+    async function loadPagePlates() {
+      const wanted = new Set();
+      BOOKS.forEach((book) => {
+        (book.pages || []).forEach((sheet) => {
+          if (sheet && sheet.image) wanted.add(sheet.image);
+        });
+      });
+      await Promise.all([...wanted].map(async (src) => {
+        try {
+          const image = new __threeuiStorageImage();
+          image.decoding = "async";
+          image.src = src;
+          await image.decode();
+          pagePlates.set(src, image);
+        } catch (error) {
+          // The page falls back to its heading and body without the plate.
+        }
+      }));
+    }
+
     const experience = document.querySelector("#experience");
     const canvas = document.querySelector("#scene");
     const loading = document.querySelector("#loading");
@@ -2033,13 +2523,7 @@
     const detailMicrocopy = document.querySelector(".detail-controls .microcopy");
     const detailEyebrow = document.querySelector("#detail-eyebrow");
     const detailTitle = document.querySelector("#detail-title");
-    const detailDeck = document.querySelector("#detail-deck");
-    const detailBinding = document.querySelector("#detail-binding");
-    const detailFormat = document.querySelector("#detail-format");
-    const detailTheme = document.querySelector("#detail-theme");
-    const detailMotif = document.querySelector("#detail-motif");
-    const detailMetaLabels = [0, 1, 2, 3].map((row) => document.querySelector(`#detail-label-${row}`));
-    const openSource = document.querySelector("#open-source");
+    const detailBody = document.querySelector("#detail-body");
     const liveRegion = document.querySelector("#live-region");
     const pointerLabel = document.querySelector("#pointer-label");
     const pointerLabelIndex = document.querySelector("#pointer-label-index");
@@ -2138,7 +2622,8 @@
       lastProgress: 0,
       lastTime: 0,
       direction: 0,
-      kind: null
+      kind: null,
+      surface: null
     };
     const detailPress = {
       active: false,
@@ -2829,6 +3314,85 @@
         ctx.textAlign = "left";
         ctx.fillRect(48, 64, logicalWidth - 96, 1);
         ctx.globalAlpha = 1;
+
+        // A volume can set out its own pages: a kicker, a heading, a body, and
+        // for the projects, the screenshot of the thing the page opens.
+        const sheet = book.pages && book.pages[pageIndex];
+        if (sheet) {
+          ctx.font = '500 11px Inter, "Helvetica Neue", Arial, sans-serif';
+          ctx.letterSpacing = "2px";
+          ctx.globalAlpha = 0.62;
+          drawWrappedCanvasText(ctx, sheet.kicker, 54, 140, 46, 17, 2);
+          ctx.globalAlpha = 1;
+
+          const headingSize = sheet.title.length > 34 ? 30 : sheet.title.length > 18 ? 38 : 50;
+          ctx.font = `400 ${headingSize}px "Iowan Old Style", Baskerville, Georgia, serif`;
+          ctx.letterSpacing = "0px";
+          const headingTop = 196;
+          drawWrappedCanvasText(
+            ctx,
+            sheet.title,
+            52,
+            headingTop,
+            Math.round(820 / headingSize),
+            headingSize * 1.08,
+            3
+          );
+
+          const shot = sheet.image && pagePlates.get(sheet.image);
+          if (shot) {
+            const frameLeft = 54;
+            const frameTop = 352;
+            const frameWidth = logicalWidth - 108;
+            const frameHeight = 232;
+            const cover = Math.max(frameWidth / shot.width, frameHeight / shot.height);
+            const drawWidth = shot.width * cover;
+            const drawHeight = shot.height * cover;
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(frameLeft, frameTop, frameWidth, frameHeight);
+            ctx.clip();
+            ctx.drawImage(
+              shot,
+              frameLeft + (frameWidth - drawWidth) * 0.5,
+              frameTop,
+              drawWidth,
+              drawHeight
+            );
+            ctx.restore();
+            ctx.globalAlpha = 0.5;
+            ctx.strokeRect(frameLeft, frameTop, frameWidth, frameHeight);
+            ctx.globalAlpha = 1;
+            if (sheet.href) {
+              ctx.font = '500 10px Inter, "Helvetica Neue", Arial, sans-serif';
+              ctx.letterSpacing = "1.6px";
+              ctx.globalAlpha = 0.7;
+              ctx.fillText("CLICK THIS PAGE TO OPEN IT  ↗", 54, frameTop + frameHeight + 28);
+              ctx.globalAlpha = 1;
+            }
+          } else if (sheet.body) {
+            ctx.globalAlpha = 0.56;
+            ctx.font = '400 19px "Iowan Old Style", Baskerville, Georgia, serif';
+            drawWrappedCanvasText(ctx, sheet.body, 54, 400, 44, 27, 7);
+            ctx.globalAlpha = 1;
+            if (sheet.href) {
+              ctx.globalAlpha = 0.68;
+              ctx.font = '500 10px Inter, "Helvetica Neue", Arial, sans-serif';
+              ctx.letterSpacing = "1.6px";
+              ctx.fillText("CLICK THIS PAGE TO OPEN IT  ↗", 54, 640);
+              ctx.globalAlpha = 1;
+            }
+          }
+
+          ctx.globalAlpha = 0.62;
+          ctx.fillRect(48, logicalHeight - 48, logicalWidth - 96, 1);
+          ctx.globalAlpha = 1;
+          const sheetTexture = configureCanvasTexture(new THREE.CanvasTexture(canvas), {
+            anisotropy: 16
+          });
+          sheetTexture.name = `${book.id}-interior-page-${pageIndex + 1}`;
+          return sheetTexture;
+        }
 
         if (pageIndex === 0) {
           ctx.font = '500 12px Inter, "Helvetica Neue", Arial, sans-serif';
@@ -3745,6 +4309,9 @@
         frontPage.scale.set(visiblePageWidth, pageHeight - 0.014, 1);
         frontPage.position.set(visiblePageWidth * 0.5, 0, 0.00022);
         pagePivot.add(frontPage);
+        // Which interior page this face prints, so a click on it can open what
+        // that page is about.
+        frontPage.userData.interiorPage = leafOrder < 4 ? leafOrder * 2 : -1;
         pageSurfaces.push(frontPage);
 
         const backPage = createMesh(
@@ -3758,6 +4325,7 @@
         backPage.position.set(visiblePageWidth * 0.5, 0, -0.00022);
         backPage.rotation.y = Math.PI;
         pagePivot.add(backPage);
+        backPage.userData.interiorPage = leafOrder < 4 ? leafOrder * 2 + 1 : -1;
         pageSurfaces.push(backPage);
         pagePivot.userData.flex = {
           curve: 0,
@@ -4028,8 +4596,11 @@
       const narrow = viewWidth < 820;
       shelfCameraPosition.set(0, narrow ? 2.02 : 1.92, narrow ? 8.7 : 8.1);
       shelfCameraTarget.set(0, narrow ? 1.57 : 1.55, 0);
-      inspectPosition.set(narrow ? 0 : -2.25, narrow ? 2.3 : 1.56, narrow ? 0.15 : 0);
-      inspectCameraPosition.set(narrow ? 0 : -0.52, narrow ? 2.46 : 1.78, narrow ? 5.7 : 5.25);
+      // The panel is wider than the one these were tuned against, so the view
+      // offset that centres the book in what is left already carries more of
+      // the shift; the world position gives back what it would double-count.
+      inspectPosition.set(narrow ? 0 : -1.52, narrow ? 2.3 : 1.56, narrow ? 0.15 : 0);
+      inspectCameraPosition.set(narrow ? 0 : -0.3, narrow ? 2.46 : 1.78, narrow ? 5.7 : 5.25);
       inspectCameraTarget.copy(inspectPosition);
 
       if (narrow) {
@@ -4041,7 +4612,7 @@
       const panelBounds = detailPanel.getBoundingClientRect();
       const panelLeft = panelBounds.left > 0 ? panelBounds.left : viewWidth * 0.64;
       const gutter = clamp(viewWidth * 0.035, 32, 56);
-      detailSafeWidth = Math.max(viewWidth * 0.42, panelLeft - gutter);
+      detailSafeWidth = Math.max(viewWidth * 0.3, panelLeft - gutter);
       const wideLayoutProgress = clamp((viewWidth - 820) / 620, 0, 1);
       const bookCenterRatio = THREE.MathUtils.lerp(0.55, 0.615, wideLayoutProgress);
       const desiredBookCenter = detailSafeWidth * bookCenterRatio;
@@ -4055,7 +4626,9 @@
       const pixelsPerWorld = viewHeight / Math.max(worldHeight, 0.001);
       const estimatedBookWidth = activeBook.base.width * pixelsPerWorld * 1.16;
       const scaleForSafeWidth = (detailSafeWidth * 0.72) / Math.max(estimatedBookWidth, 1);
-      return clamp(scaleForSafeWidth, 0.9, 1.32);
+      // The panel now carries a whole section, so the book gives up room to it
+      // and is allowed to sit a good deal smaller than the original floor.
+      return clamp(scaleForSafeWidth, 0.58, 1.12);
     }
 
     function applyDetailViewOffset() {
@@ -4387,31 +4960,26 @@
     function populateDetail(book) {
       detailEyebrow.textContent = `Volume ${book.roman} · ${book.discipline}`;
       detailTitle.textContent = book.title;
-      detailDeck.textContent = book.deck;
-      // A paper and a pipeline do not describe themselves with the same four
-      // words, so each volume carries its own row labels.
-      const rows = [detailBinding, detailFormat, detailTheme, detailMotif];
-      book.meta.forEach(([label, value], row) => {
-        detailMetaLabels[row].textContent = label;
-        if (row < rows.length - 1) {
-          rows[row].textContent = value;
-          return;
-        }
-        // The last row says where the volume goes, so it is the way there. The
-        // control below it is the same link for the narrow layout, where this
-        // list is hidden.
-        rows[row].textContent = "";
-        const link = document.createElement("a");
-        link.className = "meta-link";
-        link.href = book.href;
-        link.target = "_blank";
-        link.rel = "noopener";
-        link.textContent = value;
-        rows[row].append(link);
-      });
-      openSource.href = book.href;
-      openSource.textContent = book.opens;
-      openSource.setAttribute("aria-label", `${book.opens} for ${book.title}, opens in a new tab`);
+      // Each volume brings the markup for its own panel.
+      detailBody.innerHTML = book.panel;
+      fitPanel();
+    }
+
+    /* The panel never scrolls: everything a section has to say is on screen at
+       once. Rather than guess a type scale that survives every viewport, the
+       body is measured after it is written and stepped down until it fits. */
+    function fitPanel() {
+      if (!detailBody) return;
+      for (let step = 0; step < 20; step += 1) {
+        const scale = 1 - step * 0.035;
+        detailBody.style.setProperty("--panel-scale", scale.toFixed(3));
+        // Both have to be asked. A short section leaves the panel under its
+        // ceiling and nothing is clipped; a long one pins the panel at the
+        // ceiling and the clipping shows up inside the body instead.
+        const panelFits = detailPanel.scrollHeight <= detailPanel.clientHeight + 1;
+        const bodyFits = detailBody.scrollHeight <= detailBody.clientHeight + 1;
+        if ((panelFits && bodyFits) || scale <= 0.5) break;
+      }
     }
 
     function getSpreadLabels(book) {
@@ -4465,7 +5033,7 @@
       cancelPageDrag();
       readingOpen = open;
       if (!readingOpen) currentSpread = 0;
-      canvas.classList.remove("has-page-hover", "has-closed-book-hover");
+      canvas.classList.remove("has-page-hover", "has-closed-book-hover", "has-page-link");
       updatePageControls(false);
       pointerDirty = true;
 
@@ -4803,12 +5371,15 @@
         if (readingOpen) {
           detailBookHovered = false;
           canvas.classList.remove("has-closed-book-hover");
+          const overPage = pageSurfaceAtPointer();
           canvas.classList.toggle(
             "has-page-hover",
             pageDrag.active
-              || Boolean(pageSurfaceAtPointer())
+              || Boolean(overPage)
               || Boolean(coverSurfaceAtPointer())
           );
+          // A page that opens something says so with the cursor.
+          canvas.classList.toggle("has-page-link", Boolean(pageHrefOf(overPage)));
         } else {
           detailBookHovered = Boolean(coverSurfaceAtPointer());
           canvas.classList.remove("has-page-hover");
@@ -4820,7 +5391,7 @@
         return;
       }
       detailBookHovered = false;
-      canvas.classList.remove("has-page-hover", "has-closed-book-hover");
+      canvas.classList.remove("has-page-hover", "has-closed-book-hover", "has-page-link");
       if (mode !== "hero") {
         setHovered(-1);
         return;
@@ -4877,6 +5448,7 @@
       pageDrag.lastTime = 0;
       pageDrag.direction = 0;
       pageDrag.kind = null;
+      pageDrag.surface = null;
       canvas.classList.remove("is-page-dragging");
       controls.enabled = mode === "detail";
       if (
@@ -5024,6 +5596,7 @@
       pageDrag.lastProgress = 0;
       pageDrag.lastTime = event.timeStamp || performance.now();
       pageDrag.direction = 0;
+      pageDrag.surface = pageSurface || null;
       pageDrag.kind = coverSurface
         ? readingOpen
           ? "cover-close"
@@ -5133,6 +5706,14 @@
       requestFrame();
     }
 
+    /** The address a page face carries, if the volume gave that page one. */
+    function pageHrefOf(surface) {
+      const index = surface && surface.userData ? surface.userData.interiorPage : -1;
+      if (!activeBook || index === undefined || index < 0) return null;
+      const sheet = activeBook.data.pages && activeBook.data.pages[index];
+      return sheet && sheet.href ? sheet.href : null;
+    }
+
     function onPagePointerEnd(event) {
       if (!pageDrag.active || event.pointerId !== pageDrag.pointerId) return;
       if (event.cancelable) event.preventDefault();
@@ -5147,6 +5728,19 @@
         && dragKind === "cover-open"
         && !pageDrag.committed
         && releaseDistance <= 12;
+      // A tap on a page, rather than a drag across it, opens what that page is
+      // about — the live site, the repository, the paper.
+      const tappedHref = event.type === "pointerup"
+        && dragKind === "page"
+        && !pageDrag.committed
+        && releaseDistance <= 12
+        ? pageHrefOf(pageDrag.surface)
+        : null;
+      if (tappedHref) {
+        cancelPageDrag();
+        window.open(tappedHref, "_blank", "noopener");
+        return;
+      }
       if (pageDrag.committed) {
         settlePageDrag(true);
       } else if (shouldClickOpen) {
@@ -5199,7 +5793,7 @@
       detailBookHovered = false;
       setHovered(-1);
       if (!pageDrag.active) {
-        canvas.classList.remove("has-page-hover", "has-closed-book-hover");
+        canvas.classList.remove("has-page-hover", "has-closed-book-hover", "has-page-link");
       }
     }
 
@@ -5353,7 +5947,7 @@
       readingOpen = false;
       detailBookHovered = false;
       currentSpread = 0;
-      canvas.classList.remove("has-page-hover", "has-closed-book-hover");
+      canvas.classList.remove("has-page-hover", "has-closed-book-hover", "has-page-link");
       updatePageControls(false);
       controls.enabled = false;
       closingBookStartPosition.copy(activeBook.root.position);
@@ -5676,6 +6270,7 @@
         transitionCameraTarget.copy(inspectCameraTarget);
         currentViewOffsetX = detailViewOffsetX;
         applyDetailViewOffset();
+        fitPanel();
         resetInspectionView();
       }
       requestFrame();
@@ -5701,13 +6296,15 @@
       }
 
       if (mode === "detail" && event.key === "Tab") {
+        // The section's own links live in the panel body, so they are part of
+        // the trap rather than something only a pointer can reach.
         const focusables = [
           closeButton,
+          ...detailBody.querySelectorAll("a[href], button"),
           toggleBookButton,
           previousPageButton,
           nextPageButton,
-          resetButton,
-          openSource
+          resetButton
         ].filter((element) => !element.disabled);
         const current = focusables.indexOf(document.activeElement);
         const next = event.shiftKey
@@ -5842,6 +6439,8 @@
       } catch (error) {
         coverAtlasReady = false;
       }
+
+      await loadPagePlates();
 
       try {
         renderer = new THREE.WebGLRenderer({

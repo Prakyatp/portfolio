@@ -11,7 +11,7 @@ prakyatprakash.com. What it is, how it is built, and what still needs your words
 
 ## Direction: the shelf
 
-The landing page is the ThreeUI **Complete Shelf** page, running its own authored Three.js
+The landing page is the ThreeUI **Complete Shelf** page, running its own authored Three.js presentation. The name sits in the middle of the masthead and the five volumes are the five sections of the CV: Education, Research, Experience, Projects, Contact. Clicking one opens a panel that holds that whole section at once — it never scrolls; `fitPanel()` steps `--panel-scale` down until it fits, so Projects lands at 0.825 and the rest at 1.0. The book gives up room to the panel. The Projects volume prints the real screenshots on its pages, and tapping a page opens that site.
 presentation, with one thing changed: the seven volumes about other people's tools are replaced
 by five about Prakyat's own work.
 
@@ -51,7 +51,7 @@ document. Nothing here was rebuilt from a screenshot.
 
 ### What was changed, and nothing else
 
-49 hunks, 380 of 5,959 lines. About 300 of those are the volume data.
+71 hunks, 1,035 of 6,558 lines. The panel, the volume data and the interior pages are rewritten; the renderer, lighting, materials, geometry, gestures, reduced-motion and disposal paths are not.
 
 | Lines | Change |
 |---|---|
