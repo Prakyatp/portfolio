@@ -1,26 +1,24 @@
-import { Schibsted_Grotesk, JetBrains_Mono, Instrument_Serif } from 'next/font/google';
+import { Bricolage_Grotesque, DM_Sans, DM_Mono } from 'next/font/google';
 
-// Schibsted Grotesk: a newspaper grotesk, warm and solid. Deliberately not Inter, which is the
-// reflexive choice and reads as a default rather than a decision.
-export const sans = Schibsted_Grotesk({
+// Display: the masthead and the panel titles. Bricolage Grotesque has wide, solid counters, which
+// is what the fluid distortion on the name needs — thin letterforms smear into nothing.
+export const display = Bricolage_Grotesque({
+  subsets: ['latin'],
+  variable: '--font-display',
+  display: 'swap',
+});
+
+// Body. DM Sans and DM Mono are drawn as a pair, so the running text and the mono labels agree
+// about width and tone instead of being two unrelated choices.
+export const sans = DM_Sans({
   subsets: ['latin'],
   variable: '--font-sans',
   display: 'swap',
 });
 
-// Mono is for dates, counts and stack tags only. Never for running text.
-export const mono = JetBrains_Mono({
+export const mono = DM_Mono({
   subsets: ['latin'],
   weight: ['400', '500'],
   variable: '--font-mono',
-  display: 'swap',
-});
-
-// The display serif, for the folder stack's masthead and panel titles only. Instrument Serif has
-// the high contrast and tight fit of a book face without looking like a wedding invitation.
-export const serif = Instrument_Serif({
-  subsets: ['latin'],
-  weight: '400',
-  variable: '--font-serif',
   display: 'swap',
 });

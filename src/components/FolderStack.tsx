@@ -11,6 +11,7 @@ import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import { onScroll, scrollToTarget } from '@/engine/scroll';
 import { CopyEmail } from './CopyEmail';
+import { FluidName } from './FluidName';
 import { education, projects, publications, research, roles, site } from '@/data/site';
 
 const HERO = 0.47; // share of the screen the masthead gets before anything is open
@@ -140,7 +141,7 @@ export function FolderStack() {
     <div className="stack" ref={stack}>
       <div className="stack__pin" ref={pin}>
         <div className="stack__head" ref={head}>
-          <h1 className="stack__name">{site.name}</h1>
+          <FluidName>{site.name}</FluidName>
           <p className="stack__role">Software engineer &middot; Data pipelines &middot; ML systems</p>
           <p className="stack__cue">Open a folder, or keep scrolling</p>
         </div>

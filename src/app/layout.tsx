@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Motion } from '@/components/Motion';
 import { site } from '@/data/site';
-import { sans, mono, serif } from './fonts';
+import { sans, mono, display } from './fonts';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -35,7 +35,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable} ${serif.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${sans.variable} ${mono.variable} ${display.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: flags }} />
       </head>

@@ -29,7 +29,7 @@ export function Footer() {
         </div>
         <div className="colophon">
           <span>&copy; 2026 {site.name}</span>
-          <span>Built with Next.js. Set in Schibsted Grotesk.</span>
+          <span>Built with Next.js. Set in Bricolage Grotesque and DM Sans.</span>
         </div>
       </div>
     </footer>

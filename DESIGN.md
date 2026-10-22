@@ -71,10 +71,35 @@ The folders are objects, so they carry their own paper colours against a pale bl
 
 ### Type
 
-**Instrument Serif** for the masthead and the panel titles, **Schibsted Grotesk** for everything
-else, **JetBrains Mono** for kickers, dates and destinations.
+**Bricolage Grotesque** for the masthead and the panel titles, **DM Sans** for everything else,
+**DM Mono** for kickers, dates and destinations. Bricolage has wide, solid counters, which is what
+the fluid distortion on the name needs — thin letterforms smear into nothing. DM Sans and DM Mono
+are drawn as a pair, so the running text and the mono labels agree about width and tone instead of
+being two unrelated choices.
+
+### The name is stirred by the pointer
+
+A port of the Framer `FluidImage` component's approach to type rather than a photo: the same
+twelve-point pointer trail, each point carrying a position, a velocity and a strength that decays
+per frame; the same three forces summed into a UV displacement — a vortex around each point, a
+smudge along its travel, and a curl-noise flow; the same expanding burst on click. It is not a
+fluid solver: there is no velocity field and no dye buffer, which is why it costs so little.
+
+What it samples is a canvas with the name drawn into it, so the letters themselves smear. At rest
+they are ink; stirred, they pick up the four folder papers from the stack below. Twelve
+overlapping trail points sum to roughly ten, so the totals are scaled back down and the final
+displacement is clamped — without that the letters are erased rather than stirred.
+
+| | |
+|---|---|
+| Text | the `<h1>` keeps the real text and is what the canvas measures and wraps to; the canvas is decoration over the top of it |
+| Fallback | no WebGL, or reduced motion, and the text simply shows as itself |
+| Cost | it only runs while the pointer is near, and stops once the trail has decayed |
 
 ### Decisions
+
+**Only the name moves.** The fluid effect is on the masthead and nowhere else; the panels are
+quiet so the content is readable.
 
 **No header, no footer.** The tabs are the navigation and Contact is the last folder. The 404 page
 keeps a header and footer of its own, since it has no drawer.
@@ -99,9 +124,10 @@ Production build. Scripts in `.qa/` (gitignored).
 
 | | Result |
 |---|---|
-| mobile LCP, throttled 4G + 4x CPU | **692ms** |
+| mobile LCP, throttled 4G + 4x CPU | **660ms** |
 | CLS | **0** |
 | fps opening a folder, mobile | **60** |
+| fps stirring the name, desktop | **60** |
 | axe serious or critical, at every level | **0** |
 | tap targets under 24px | **0** |
 | horizontal overflow | **none** at 390 and 1440 |
