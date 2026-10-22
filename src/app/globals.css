@@ -7,16 +7,22 @@
 :root {
   color-scheme: light;
 
-  --c-bg: #fbfbf9;
+  --c-bg: #ffffff;
   --c-surface: #ffffff;
-  --c-sunk: #f4f4f1;
+  --c-sunk: #f4f4f2;
   --c-fg: #16181c;
   --c-muted: #5c6168;
   --c-faint: #6b7077;
   --c-line: #e4e4df;
   --c-line-strong: #d2d3cc;
   --c-accent: #0f6b4a;
-  --c-accent-soft: #e6f0ea;
+  --c-accent-soft: #e9f2ec;
+
+  /* The pass is an object in the scene, so it carries its own colours. */
+  --p-body: #121317;
+  --p-ink: #f4f3ee;
+  --p-dim: #8f9299;
+  --p-rit: #f76902;
 
   --f-sans: var(--font-sans), 'Schibsted Grotesk', system-ui, sans-serif;
   --f-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -142,6 +148,8 @@ html.lenis, html.lenis body { height: auto; }
 
 section { padding-block: var(--s-section); }
 section + section { padding-top: 0; }
+/* An in-page link must not land a heading under the sticky bar. */
+section[id] { scroll-margin-top: 4.75rem; }
 
 .sec-head {
   display: flex;
@@ -256,7 +264,338 @@ html.scrolled .topbar { border-bottom-color: var(--c-line); }
 @media (hover: hover) { a:hover .arrow, .btn:hover .arrow { transform: translate(2px, -2px); } }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   1. HERO. A compact masthead, not a screen filler.
+   1. THE LANDING. One full screen, white, with the pass hanging in it.
+
+   Everything in the rig is sized in "pass units": the card is 100u wide, so
+   1u = --pass-w / 100 and the whole thing — strap, clip, type on the card —
+   scales as one object. --pass-w is capped by svh as well as vw so the rig
+   always fits the screen it is hanging in.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.landing {
+  background: #fff;
+  min-height: calc(100svh - 3.4rem);
+  padding-block: 0 var(--s-4);
+  display: flex;
+  flex-direction: column;
+  /* The rig is wider than a phone, but the strap still runs up past the top. */
+  overflow-x: clip;
+  overflow-y: visible;
+}
+.stage {
+  --pass-w: clamp(170px, min(66vw, 34svh), 300px);
+  --u: calc(var(--pass-w) / 100);
+  position: relative;
+  flex: 1 0 calc(var(--u) * 234);
+  perspective: calc(var(--u) * 1000);
+  perspective-origin: 50% calc(var(--u) * 158);
+}
+
+/* The lanyard runs off the top of the screen, so the header is clear glass
+   until the page moves under it. */
+html:not(.scrolled) .topbar {
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.stage__strap {
+  position: absolute;
+  top: calc(var(--u) * -46);
+  left: 50%;
+  width: calc(var(--u) * 300);
+  height: calc(var(--u) * 180);
+  margin-left: calc(var(--u) * -150);
+  /* The rig is wider than a phone; the global svg max-width would squash it. */
+  max-width: none;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* ── the card ─────────────────────────────────────────────────────────────── */
+
+.pass {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: var(--pass-w);
+  height: calc(var(--u) * 134);
+  margin-left: calc(var(--pass-w) / -2);
+  margin-top: calc(var(--u) * -11);
+  /* The hole, 11u below the card's top edge, is what hangs from the strap. */
+  transform-origin: 50% calc(var(--u) * 11);
+  transform: translate3d(0, calc(var(--u) * 102), 0);
+  transform-style: preserve-3d;
+  will-change: transform;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.stage[data-live] .pass { cursor: grab; touch-action: none; }
+.stage[data-held] .pass { cursor: grabbing; }
+
+.pass__clip {
+  position: absolute;
+  top: calc(var(--u) * -8.5);
+  left: 50%;
+  width: calc(var(--u) * 34);
+  height: calc(var(--u) * 30);
+  margin-left: calc(var(--u) * -17);
+  max-width: none;
+  overflow: visible;
+  transform: translateZ(calc(var(--u) * 3));
+  transform-origin: 50% 65%;
+}
+
+.pass__flip {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+.pass__side {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: calc(var(--u) * 9);
+  padding-top: calc(var(--u) * 17);
+  border-radius: calc(var(--u) * 5.5);
+  background: var(--p-body);
+  color: var(--p-ink);
+  backface-visibility: hidden;
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.07),
+    0 calc(var(--u) * 1) calc(var(--u) * 2) rgb(12 14 18 / 0.2),
+    0 calc(var(--u) * 7) calc(var(--u) * 16) rgb(12 14 18 / 0.16);
+}
+.pass__front { transform: translateZ(calc(var(--u) * 1.5)); }
+.pass__back {
+  transform: rotateY(180deg) translateZ(calc(var(--u) * 1.5));
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  gap: calc(var(--u) * 3);
+}
+.pass__gloss {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    116deg,
+    rgb(255 255 255 / 0.15) 0%,
+    rgb(255 255 255 / 0.03) 24%,
+    rgb(255 255 255 / 0) 42%,
+    rgb(255 255 255 / 0) 64%,
+    rgb(255 255 255 / 0.06) 90%
+  );
+}
+/* The punched slot the ring passes through. The page behind is white, so the
+   slot is white with a shadow cast into it. */
+.pass__slot {
+  position: absolute;
+  top: calc(var(--u) * 9);
+  left: 50%;
+  width: calc(var(--u) * 15);
+  height: calc(var(--u) * 4);
+  margin-left: calc(var(--u) * -7.5);
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: inset 0 calc(var(--u) * 0.7) calc(var(--u) * 1) rgb(0 0 0 / 0.45);
+}
+
+.pass__head {
+  display: flex;
+  align-items: baseline;
+  gap: calc(var(--u) * 3.5);
+  padding-bottom: calc(var(--u) * 3.5);
+  border-bottom: 1px solid rgb(255 255 255 / 0.12);
+}
+.pass__rit {
+  font-size: calc(var(--u) * 11);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: var(--p-rit);
+}
+.pass__school {
+  font-size: calc(var(--u) * 4.2);
+  line-height: 1.15;
+  color: var(--p-dim);
+  letter-spacing: 0.01em;
+}
+.pass__photo {
+  margin-top: calc(var(--u) * 4);
+  height: calc(var(--u) * 46);
+  flex: none;
+  overflow: hidden;
+  border-radius: calc(var(--u) * 2.5);
+  background: #1c1e23;
+}
+.pass__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
+.pass__name {
+  margin-top: calc(var(--u) * 4.5);
+  font-size: calc(var(--u) * 9.5);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.028em;
+  text-wrap: balance;
+}
+.pass__role {
+  margin-top: calc(var(--u) * 2.5);
+  font-family: var(--f-mono);
+  font-size: calc(var(--u) * 4.2);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--p-rit);
+}
+.pass__foot {
+  margin-top: auto;
+  padding-top: calc(var(--u) * 3.5);
+  border-top: 1px solid rgb(255 255 255 / 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 0.8);
+  font-family: var(--f-mono);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.25;
+}
+.pass__year { font-size: calc(var(--u) * 4.6); letter-spacing: 0.05em; color: var(--p-ink); }
+.pass__deg { font-size: calc(var(--u) * 3.9); color: var(--p-dim); }
+
+.pass__backline {
+  font-size: calc(var(--u) * 4.4);
+  line-height: 1.3;
+  color: var(--p-dim);
+}
+.pass__backline:first-of-type { color: var(--p-ink); }
+/* A barcode: a repeating-gradient, not an image. */
+.pass__code {
+  width: calc(var(--u) * 66);
+  height: calc(var(--u) * 20);
+  margin-top: calc(var(--u) * 4);
+  background:
+    repeating-linear-gradient(90deg, var(--p-ink) 0 2%, transparent 2% 3.6%, var(--p-ink) 3.6% 4.4%, transparent 4.4% 7%);
+  opacity: 0.85;
+}
+.pass__ref {
+  font-family: var(--f-mono);
+  font-size: calc(var(--u) * 3.8);
+  letter-spacing: 0.04em;
+  color: var(--p-dim);
+}
+
+/* ── the drop ─────────────────────────────────────────────────────────────── */
+/* The rest pose is plain CSS, so the pass paints with the document and never
+   waits on the bundle. The fall and the first swings are a keyframe animation;
+   the simulation in LanyardPass.tsx takes over only once it has finished, at
+   exactly the pose the last keyframe leaves. */
+
+@keyframes pass-fall {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    animation-timing-function: cubic-bezier(0.4, 0, 0.95, 0.52);
+  }
+  48% {
+    transform: translate3d(0, calc(var(--u) * 102), 0) rotate(-2.4deg);
+    animation-timing-function: cubic-bezier(0.36, 0, 0.5, 1);
+  }
+  66% { transform: translate3d(calc(var(--u) * 7), calc(var(--u) * 101), 0) rotate(3.4deg); }
+  81% { transform: translate3d(calc(var(--u) * -4), calc(var(--u) * 102), 0) rotate(-1.7deg); }
+  93% { transform: translate3d(calc(var(--u) * 1.6), calc(var(--u) * 102), 0) rotate(0.7deg); }
+  100% { transform: translate3d(0, calc(var(--u) * 102), 0) rotate(0deg); }
+}
+/* The strap sways with the card. */
+@keyframes cord-drop {
+  0% { transform: rotate(0deg); animation-timing-function: cubic-bezier(0.4, 0, 0.95, 0.52); }
+  48% { transform: rotate(0deg); animation-timing-function: cubic-bezier(0.36, 0, 0.5, 1); }
+  66% { transform: rotate(2.6deg); }
+  81% { transform: rotate(-1.5deg); }
+  93% { transform: rotate(0.6deg); }
+  100% { transform: rotate(0deg); }
+}
+/* The strap pays out behind a white cover that falls with the card. A cover is a
+   transform, so it composites on the same thread as the card and cannot drift out of
+   step with it the way an animated stroke-dashoffset does. */
+@keyframes pass-payout {
+  0% {
+    transform: rotate(0deg) translateY(0);
+    animation-timing-function: cubic-bezier(0.4, 0, 0.95, 0.52);
+  }
+  48% {
+    transform: rotate(0deg) translateY(calc(var(--u) * 102));
+    animation-timing-function: cubic-bezier(0.36, 0, 0.5, 1);
+  }
+  66% { transform: rotate(2.6deg) translateY(calc(var(--u) * 102)); }
+  81% { transform: rotate(-1.5deg) translateY(calc(var(--u) * 102)); }
+  93% { transform: rotate(0.6deg) translateY(calc(var(--u) * 102)); }
+  100% { transform: rotate(0deg) translateY(calc(var(--u) * 102)); }
+}
+.stage__payout { display: none; }
+html.motion .stage:not([data-live]) .stage__payout {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: calc(var(--u) * 60);
+  height: calc(var(--u) * 120);
+  margin-left: calc(var(--u) * -30);
+  background: #fff;
+  transform-origin: 50% 0;
+  animation: pass-payout 1.35s both;
+}
+html.motion .stage:not([data-live]) .pass {
+  animation: pass-fall 1.35s both;
+}
+html.motion .stage:not([data-live]) .stage__strap {
+  transform-origin: 50% calc(var(--u) * 46);
+  animation: cord-drop 1.35s both;
+}
+
+/* ── under the pass ───────────────────────────────────────────────────────── */
+
+.landing__foot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-3);
+  padding-inline: var(--gutter);
+  text-align: center;
+}
+.landing__line {
+  font-size: var(--t-s);
+  color: var(--c-muted);
+  max-width: 44ch;
+}
+.landing__hint {
+  font-family: var(--f-mono);
+  font-size: var(--t-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-faint);
+}
+@media (prefers-reduced-motion: reduce) { .landing__hint { display: none; } }
+.landing__cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: var(--t-xs);
+  font-weight: 500;
+  color: var(--c-muted);
+  padding: var(--s-2) var(--s-3);
+  border-radius: 999px;
+  transition: background 0.22s ease, color 0.22s ease;
+}
+@media (hover: hover) { .landing__cue:hover { background: var(--c-sunk); color: var(--c-fg); } }
+.landing__cue:focus-visible { background: var(--c-sunk); color: var(--c-fg); }
+.landing__cue svg { width: 14px; height: 14px; }
+.motion .landing__cue svg { animation: cue 2.4s var(--ease) infinite; }
+@keyframes cue {
+  0%, 62%, 100% { transform: translateY(0); }
+  76% { transform: translateY(3px); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   1b. THE PITCH. The first thing after the screen: what he does, in words.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .hero { padding-top: var(--s-7); padding-bottom: var(--s-6); }
@@ -278,30 +617,12 @@ html.scrolled .topbar { border-bottom-color: var(--c-line); }
 @media (max-width: 900px) {
   .hero__grid { grid-template-columns: 1fr; gap: var(--s-5); }
 }
-.hero__top { display: flex; align-items: center; gap: var(--s-4); flex-wrap: wrap; }
-.hero__portrait {
-  width: 68px; height: 68px; flex: none;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 1px solid var(--c-line);
-  background: var(--c-sunk);
-}
-.hero__portrait img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; }
-.hero__id { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.hero h1 {
-  font-size: var(--t-display);
-  line-height: 1.08;
-  font-weight: 650;
-  letter-spacing: -0.028em;
-}
-.hero__role { font-size: var(--t-s); color: var(--c-muted); }
 .hero__statement {
-  margin-top: var(--s-5);
-  font-size: clamp(1.1rem, 1rem + 0.5vw, 1.35rem);
-  line-height: 1.34;
-  font-weight: 500;
-  letter-spacing: -0.015em;
-  max-width: 30ch;
+  font-size: clamp(1.05rem, 0.98rem + 0.36vw, 1.22rem);
+  line-height: 1.42;
+  font-weight: 450;
+  letter-spacing: -0.012em;
+  max-width: 52ch;
 }
 .hero__intro { margin-top: var(--s-3); max-width: 58ch; color: var(--c-muted); font-size: var(--t-s); }
 .hero__actions { margin-top: var(--s-5); display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; }
@@ -333,10 +654,10 @@ html.scrolled .topbar { border-bottom-color: var(--c-line); }
   width: 42px; height: 42px; flex: none;
   display: grid; place-items: center;
   border-radius: var(--radius-sm);
-  background: var(--c-accent-soft);
-  color: var(--c-accent);
+  background: #fdf0e7;
+  color: #9c4100;
   font-size: var(--t-xs);
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.02em;
 }
 .edu__body { flex: 1; min-width: 15rem; }

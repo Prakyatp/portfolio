@@ -42,3 +42,7 @@ public/assets/Screenshot*.png
 
 # QA artifacts from the awwwards skill
 .shots/
+
+# local QA scripts and screenshots
+.qa/
+.shots/

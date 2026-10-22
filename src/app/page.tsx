@@ -1,54 +1,66 @@
 import Image from 'next/image';
+import { LanyardPass } from '@/components/LanyardPass';
 import { education, offTheClock, projects, publications, research, roles, site } from '@/data/site';
 
 export default function Home() {
   return (
     <>
-      {/* ── 1. Name ──────────────────────────────────────────────────────── */}
-      <section className="shell hero">
+      {/* ── 1. The landing. One screen: the pass, and nothing else. ──────── */}
+      <section className="landing">
+        <LanyardPass />
+        <div className="landing__foot">
+          <p className="landing__line" data-enter style={{ '--d': 0.9 } as React.CSSProperties}>
+            {site.statement}
+          </p>
+          <a
+            className="landing__cue"
+            href="#about"
+            data-enter
+            style={{ '--d': 1 } as React.CSSProperties}
+          >
+            Keep going
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path
+                d="M8 2v11M3.5 8.5 8 13l4.5-4.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </a>
+          <p className="landing__hint" data-enter style={{ '--d': 1.1 } as React.CSSProperties}>
+            Pick it up and swing it
+          </p>
+        </div>
+      </section>
+
+      {/* ── 1b. The pitch, in words ───────────────────────────────────────── */}
+      <section className="shell hero" id="about">
         <div className="hero__grid">
           <div>
-        <div className="hero__top" data-enter style={{ '--d': 0.02 } as React.CSSProperties}>
-          <div className="hero__portrait">
-            <Image
-              src="/assets/prakyat.jpeg"
-              alt={`${site.name}, portrait`}
-              width={136}
-              height={136}
-              priority
-            />
-          </div>
-          <div className="hero__id">
-            <h1>{site.name}</h1>
-            <p className="hero__role">
-              {site.role} &middot; {site.location}
+            <p className="hero__statement" data-reveal>
+              {site.intro}
             </p>
-          </div>
-        </div>
-
-        <p className="hero__statement" data-enter style={{ '--d': 0.1 } as React.CSSProperties}>
-          {site.statement}
-        </p>
-        <p className="hero__intro" data-enter style={{ '--d': 0.16 } as React.CSSProperties}>
-          {site.intro}
-        </p>
-
-        <div className="hero__actions" data-enter style={{ '--d': 0.22 } as React.CSSProperties}>
-          <span className="pill">{site.availability}</span>
-          <a className="btn btn--primary" href="#projects">
-            See the projects
-          </a>
-          <a className="btn" href="/resume.pdf" target="_blank" rel="noopener">
-            Resume <span className="arrow">&#8599;</span>
-          </a>
-        </div>
+            <div className="hero__actions" data-reveal>
+              <span className="pill">{site.availability}</span>
+              <a className="btn btn--primary" href="#projects">
+                See the projects
+              </a>
+              <a className="btn" href="/resume.pdf" target="_blank" rel="noopener">
+                Resume <span className="arrow">&#8599;</span>
+              </a>
+            </div>
           </div>
 
-          <aside className="glance card" data-enter style={{ '--d': 0.28 } as React.CSSProperties}>
+          <aside className="glance card" data-reveal>
             <dl>
               <div>
                 <dt>Now</dt>
-                <dd>{roles[0].title.replace(', Machine Learning', '')}, {education.abbr}</dd>
+                <dd>
+                  {roles[0].title.replace(', Machine Learning', '')}, {education.abbr}
+                </dd>
               </div>
               <div>
                 <dt>Studying</dt>
