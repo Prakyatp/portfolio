@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import {
+  contactLinks,
   education,
-  offTheClock,
   projects,
   publications,
   research,
@@ -10,6 +10,7 @@ import {
   site,
   skills,
 } from '@/data/site';
+import { readSans, readSerif } from '../fonts';
 import './read.css';
 
 export const metadata: Metadata = {
@@ -31,7 +32,7 @@ const RESUME_FILE = 'Prakyat-Prakash-Resume.pdf';
 
 export default function Read() {
   return (
-    <article className="read">
+    <article className={`read ${readSerif.variable} ${readSans.variable}`}>
       <header className="read__top">
         <div>
           <h1 className="read__name">{site.name}</h1>
@@ -157,22 +158,44 @@ export default function Read() {
           Projects
         </h2>
         {projects.map((p) => (
-          <div className="entry" key={p.href}>
-            <div className="entry__head">
-              <h3 className="entry__title">{p.title}</h3>
-              <span className="entry__when">{p.year}</span>
-            </div>
-            <a className="entry__link" href={p.href} target="_blank" rel="noopener">
-              {p.destination} ↗
+          <div className="entry project" key={p.href}>
+            {/* The screenshot is the link, as it is inside the book: the thing you see is the
+                thing you click. The heading link beside it carries the accessible name, so the
+                image link is hidden from the accessibility tree rather than repeating it. */}
+            <a
+              className="project__shot"
+              href={p.href}
+              target="_blank"
+              rel="noopener"
+              tabIndex={-1}
+              aria-hidden="true"
+            >
+              {/* A plain <img>, not next/image: these are two small static screenshots, the
+                  optimizer would save nothing worth having, and this keeps the page working
+                  under a static export. The intrinsic size is the files' real 1100×630, so
+                  the row reserves its height before the picture arrives. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={p.cover.src} alt="" width={1100} height={630} loading="lazy" decoding="async" />
             </a>
-            <ul className="entry__points">
-              <li>{p.blurb}</li>
-            </ul>
-            <ul className="tags">
-              {p.stack.map((s) => (
-                <li key={s}>{s}</li>
-              ))}
-            </ul>
+            <div className="project__body">
+              <div className="entry__head">
+                <h3 className="entry__title">
+                  <a href={p.href} target="_blank" rel="noopener">
+                    {p.title}
+                  </a>
+                </h3>
+                <span className="entry__when">{p.year}</span>
+              </div>
+              <a className="entry__link" href={p.href} target="_blank" rel="noopener">
+                {p.destination} ↗
+              </a>
+              <p className="project__blurb">{p.blurb}</p>
+              <ul className="tags">
+                {p.stack.map((s) => (
+                  <li key={s}>{s}</li>
+                ))}
+              </ul>
+            </div>
           </div>
         ))}
       </section>
@@ -196,13 +219,25 @@ export default function Read() {
           Contact
         </h2>
         <p className="read__lead">
-          {site.availability}. Based in {site.location}. Reach me at{' '}
-          <a className="entry__link" href={`mailto:${site.email}`}>
-            {site.email}
-          </a>
-          .
+          {site.availability}. Based in {site.location}.
         </p>
-        <p className="read__p">{offTheClock.line}</p>
+        <ul className="contact">
+          {contactLinks.map((c) => (
+            <li key={c.label}>
+              <a
+                href={c.href}
+                target={c.href.startsWith('http') ? '_blank' : undefined}
+                rel={c.href.startsWith('http') ? 'noopener' : undefined}
+              >
+                <span className="contact__label">{c.label}</span>
+                <span className="contact__hint">{c.hint}</span>
+                <span className="contact__go" aria-hidden="true">
+                  ↗
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <footer className="read__foot">

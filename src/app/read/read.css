@@ -4,14 +4,29 @@
    expects it, on one scroll, with nothing to operate: no 3D, no reveals, no
    smooth-scroll hijack of its own. Everything is in the DOM at first paint so
    it is readable with JS off, searchable with ctrl-F, and printable.
-   Built from the tokens in globals.css.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .read {
+  /* Set like a document: a text serif for the things you scan, a grotesque for
+     the things you read, mono for the labels that are really furniture. */
+  --f-read-serif: var(--font-read-serif), 'Newsreader', Iowan Old Style, Georgia, serif;
+  --f-read-sans: var(--font-read-sans), 'Inter', system-ui, sans-serif;
+
+  /* One vertical rhythm, named once. The earlier draft inherited the drawer's
+     section spacing, which is sized for full-bleed panels and left craters
+     between the sections of a document. */
+  --gap-section: clamp(2.25rem, 1.9rem + 1.3vw, 3rem);
+  --gap-entry: 1.75rem;
+  --gap-head: 0.5rem;
+
   --read-maxw: 46rem;
   max-width: var(--read-maxw);
   margin: 0 auto;
-  padding: clamp(2rem, 1.4rem + 2.6vw, 4rem) var(--gutter) var(--s-7);
+  padding: clamp(2rem, 1.4rem + 2.6vw, 3.5rem) var(--gutter) var(--s-7);
+  font-family: var(--f-read-sans);
+  font-size: 0.9375rem;
+  line-height: 1.62;
+  letter-spacing: -0.003em;
 }
 
 /* ── masthead ─────────────────────────────────────────────────────────────── */
@@ -19,26 +34,26 @@
 .read__top {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: flex-end;
   justify-content: space-between;
   gap: var(--s-3) var(--s-5);
-  padding-bottom: var(--s-5);
+  padding-bottom: var(--s-4);
   border-bottom: 1px solid var(--c-line-strong);
 }
 
 .read__name {
-  font-family: var(--f-display);
-  font-size: var(--t-display);
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
+  font-family: var(--f-read-serif);
+  font-size: clamp(2.1rem, 1.5rem + 2.4vw, 3.1rem);
+  font-weight: 500;
+  letter-spacing: -0.021em;
+  line-height: 1.04;
 }
 
 .read__role {
-  margin-top: var(--s-2);
+  margin-top: 0.3rem;
   max-width: 34em;
   color: var(--c-muted);
-  font-size: var(--t-s);
+  font-size: 0.9375rem;
 }
 
 .read__actions {
@@ -48,7 +63,7 @@
 }
 
 .read__action {
-  padding: 0.5em 0.9em;
+  padding: 0.48em 0.95em;
   border: 1px solid var(--c-line-strong);
   border-radius: 999px;
   font-size: var(--t-xs);
@@ -79,8 +94,8 @@
 .read__meta {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--s-2) var(--s-4);
-  margin-top: var(--s-4);
+  gap: 0.35rem var(--s-4);
+  margin-top: var(--s-3);
   color: var(--c-faint);
   font-family: var(--f-mono);
   font-size: var(--t-mono);
@@ -100,7 +115,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--s-2) var(--s-4);
-  margin-top: var(--s-5);
+  margin-top: var(--s-4);
   font-size: var(--t-xs);
 }
 
@@ -117,7 +132,7 @@
 /* ── sections ─────────────────────────────────────────────────────────────── */
 
 .read__section {
-  padding-top: var(--s-section);
+  padding-top: var(--gap-section);
 }
 
 .read__h2 {
@@ -132,8 +147,11 @@
 }
 
 .read__lead {
-  max-width: 38em;
-  font-size: 1.0625rem;
+  max-width: 36em;
+  font-family: var(--f-read-serif);
+  font-size: 1.15rem;
+  line-height: 1.5;
+  letter-spacing: -0.008em;
 }
 
 .read__p {
@@ -142,9 +160,9 @@
   color: var(--c-muted);
 }
 
-/* An entry: a role, a degree, a paper, a project. One grid so the dates line up. */
+/* An entry: a role, a degree, a paper, a project. */
 .entry {
-  padding-top: var(--s-5);
+  padding-top: var(--gap-entry);
 }
 
 /* Only an entry that opens its section loses the gap. In Research the first entry is a paper
@@ -163,7 +181,7 @@
 }
 
 .read__sub + .entry {
-  padding-top: var(--s-4);
+  padding-top: var(--s-3);
 }
 
 .entry__head {
@@ -171,12 +189,20 @@
   flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
-  gap: var(--s-1) var(--s-4);
+  gap: 0.15rem var(--s-4);
 }
 
 .entry__title {
-  font-size: var(--t-h3);
+  font-family: var(--f-read-serif);
+  font-size: 1.1875rem;
   font-weight: 600;
+  letter-spacing: -0.011em;
+  line-height: 1.26;
+}
+
+.entry__title a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .entry__when {
@@ -187,21 +213,21 @@
 }
 
 .entry__where {
-  margin-top: 1px;
+  margin-top: 0.15rem;
   color: var(--c-muted);
   font-size: var(--t-s);
 }
 
 .entry__points {
-  margin-top: var(--s-3);
+  margin-top: var(--gap-head);
   display: grid;
-  gap: var(--s-2);
+  gap: 0.4rem;
 }
 
 .entry__points li {
   position: relative;
-  max-width: 40em;
-  padding-left: 1.1em;
+  max-width: 42em;
+  padding-left: 1.05em;
   color: var(--c-muted);
   font-size: var(--t-s);
 }
@@ -209,24 +235,24 @@
 .entry__points li::before {
   content: '';
   position: absolute;
-  top: 0.62em;
+  top: 0.66em;
   left: 0;
   width: 5px;
   height: 1px;
   background: var(--c-line-strong);
 }
 
-/* ── education courses, skills: the same tag list twice ───────────────────── */
+/* ── education courses, project stacks: the same tag list ─────────────────── */
 
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--s-2);
-  margin-top: var(--s-3);
+  gap: 0.35rem;
+  margin-top: var(--gap-head);
 }
 
 .tags li {
-  padding: 0.25em 0.6em;
+  padding: 0.22em 0.58em;
   border: 1px solid var(--c-line);
   border-radius: var(--radius-sm);
   background: var(--c-sunk);
@@ -236,12 +262,12 @@
 
 .skillset {
   display: grid;
-  gap: var(--s-4);
+  gap: var(--s-3);
 }
 
 .skillset__group {
   display: grid;
-  grid-template-columns: 11rem minmax(0, 1fr);
+  grid-template-columns: 10.5rem minmax(0, 1fr);
   align-items: baseline;
   gap: var(--s-2) var(--s-4);
 }
@@ -259,11 +285,11 @@
   font-size: var(--t-s);
 }
 
-/* ── publications and projects, which both end in a link ──────────────────── */
+/* ── publications ─────────────────────────────────────────────────────────── */
 
 .entry__authors {
-  margin-top: var(--s-2);
-  max-width: 40em;
+  margin-top: var(--gap-head);
+  max-width: 42em;
   color: var(--c-muted);
   font-size: var(--t-s);
 }
@@ -276,8 +302,8 @@
 .entry__link {
   display: inline-flex;
   align-items: center;
-  gap: 0.35em;
-  margin-top: var(--s-3);
+  gap: 0.3em;
+  margin-top: 0.45rem;
   color: var(--c-accent);
   font-size: var(--t-s);
   font-weight: 500;
@@ -290,7 +316,7 @@
 
 .entry__doi {
   display: block;
-  margin-top: var(--s-2);
+  margin-top: 0.4rem;
   color: var(--c-faint);
   font-family: var(--f-mono);
   font-size: var(--t-mono);
@@ -301,11 +327,94 @@
   color: var(--c-accent);
 }
 
+/* ── projects: the screenshot is the link ─────────────────────────────────── */
+
+.project {
+  display: grid;
+  grid-template-columns: 15rem minmax(0, 1fr);
+  gap: var(--s-5);
+  align-items: start;
+}
+
+.project__shot {
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--c-line-strong);
+  border-radius: var(--radius);
+  background: var(--c-sunk);
+  line-height: 0;
+}
+
+.project__shot img {
+  width: 100%;
+  height: auto;
+  transition: transform 320ms var(--ease);
+}
+
+/* The whole entry is one target in practice, so hovering the words lifts the picture too. */
+.project:hover .project__shot img {
+  transform: scale(1.025);
+}
+
+.project__blurb {
+  margin-top: var(--gap-head);
+  max-width: 42em;
+  color: var(--c-muted);
+  font-size: var(--t-s);
+}
+
+/* ── contact: a list of ways to reach him, not a row of pills ─────────────── */
+
+.contact {
+  display: grid;
+  gap: 1px;
+  margin-top: var(--s-4);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius);
+  background: var(--c-line);
+  overflow: hidden;
+}
+
+.contact a {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--s-3);
+  padding: 0.72rem var(--s-4);
+  background: var(--c-surface);
+  transition: background 160ms var(--ease);
+}
+
+.contact a:hover {
+  background: var(--c-sunk);
+}
+
+.contact__label {
+  font-size: var(--t-s);
+  font-weight: 600;
+}
+
+.contact__hint {
+  color: var(--c-muted);
+  font-family: var(--f-mono);
+  font-size: var(--t-mono);
+  overflow-wrap: anywhere;
+}
+
+.contact__go {
+  color: var(--c-faint);
+  font-size: var(--t-s);
+}
+
+.contact a:hover .contact__go {
+  color: var(--c-accent);
+}
+
 /* ── the way back ─────────────────────────────────────────────────────────── */
 
 .read__foot {
-  margin-top: var(--s-section);
-  padding-top: var(--s-5);
+  margin-top: var(--gap-section);
+  padding-top: var(--s-4);
   border-top: 1px solid var(--c-line-strong);
   display: flex;
   flex-wrap: wrap;
@@ -329,13 +438,26 @@
 
 /* ── narrow ───────────────────────────────────────────────────────────────── */
 
-@media (max-width: 40rem) {
+@media (max-width: 46rem) {
+  .project {
+    grid-template-columns: 1fr;
+    gap: var(--s-3);
+  }
+}
+
+@media (max-width: 34rem) {
   .skillset__group {
     grid-template-columns: 1fr;
+    gap: 0.15rem;
   }
 
-  .entry__head {
-    gap: var(--s-1);
+  .contact a {
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: 0.1rem;
+  }
+
+  .contact__hint {
+    grid-column: 1;
   }
 }
 
@@ -345,6 +467,7 @@
   .read {
     max-width: none;
     padding: 0;
+    font-size: 10.5pt;
   }
 
   .read__actions,
@@ -354,7 +477,7 @@
   }
 
   .read__section {
-    padding-top: 1.4rem;
+    padding-top: 1.2rem;
     break-inside: avoid;
   }
 
@@ -362,12 +485,21 @@
     break-inside: avoid;
   }
 
+  .project {
+    grid-template-columns: 9rem minmax(0, 1fr);
+  }
+
   .tags li {
     background: none;
   }
 
+  .contact {
+    background: none;
+  }
+
   .entry__link,
-  .entry__doi {
+  .entry__doi,
+  .contact__go {
     color: inherit;
   }
 
@@ -378,7 +510,9 @@
   }
 
   .read__nav a::after,
-  .read__meta a::after {
+  .read__meta a::after,
+  .project__shot::after,
+  .entry__title a::after {
     content: '';
   }
 }

@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#171a24">
   <meta
     name="description"
-    content="Selected work by Prakyat Prakash: three projects and two papers, bound as five field guides on an interactive shelf."
+    content="Selected work by Prakyat Prakash: two projects and two papers, bound as five field guides on an interactive shelf."
   >
   <title>Prakyat Prakash — Selected work</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2190,7 +2190,7 @@
         <a href="/resume.pdf" download="Prakyat-Prakash-Resume.pdf">Download r&eacute;sum&eacute; <span aria-hidden="true">&#8595;</span></a>
       </nav>
       <div class="fallback__footer">
-        <span>MS Computer Science at RIT, 2024 to 2026. Two papers published in 2026 with the Cui Lab. Three projects, all of them live.</span>
+        <span>MS Computer Science at RIT, 2024 to 2026. Two papers published in 2026 with the Cui Lab. Two projects, both of them live.</span>
         <span>prakyat02@gmail.com &middot; Rochester, New York &middot; open to 2026 SWE and ML roles.</span>
       </div>
     </section>
@@ -2210,7 +2210,7 @@
     import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
     import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
 
-    /* The collection is Prakyat Prakash's own: three projects and two papers,
+    /* The collection is Prakyat Prakash's own: two projects and two papers,
        bound as five imagined field guides. Everything around this array is the
        authored Working Volumes document, untouched. */
     const COLLECTION = "PRAKYAT PRAKASH";
@@ -2288,10 +2288,10 @@
         roman: "II",
         discipline: "Computational biology",
         note: "ML and deep learning on life science and genomics.",
-        deck: "I work with machine learning and deep learning on life science and genomics — computational biology. Two papers published in 2026 with the Cui Lab at RIT.",
+        deck: "Machine learning and deep learning on life science and genomics — computational biology. Two labs at RIT, the KC Lab and the Cui Lab, and a research assistantship in the Cui Lab.",
         panel: `
           <div class="sheet">
-            <p class="lede">I work with machine learning and deep learning on life science and genomics &mdash; computational biology.</p>
+            <p class="lede">Machine learning and deep learning on life science and genomics &mdash; computational biology. I have worked in the <b>KC Lab</b> and the <b>Cui Lab</b> at RIT, and I am a Graduate Research Assistant in the Cui Lab.</p>
             <p class="kicker">Published, 2026</p>
             <a class="paper" href="https://doi.org/10.3389/fbinf.2026.1794098" target="_blank" rel="noopener">
               <strong>Machine learning-based determination of sex-related bladder cancer biomarkers</strong>
@@ -2306,7 +2306,7 @@
           </div>`,
         chapters: ["Bladder cancer", "DNA codes", "Methods"],
         pages: [
-          { kicker: "CUI LAB · RIT", title: "Research", body: "Machine learning and deep learning on life science and genomics. Two papers published in 2026." },
+          { kicker: "KC LAB AND CUI LAB · RIT", title: "Research", body: "Machine learning and deep learning on life science and genomics. Research assistant in the Cui Lab. Two papers published in 2026." },
           { kicker: "PAPER 01 · FRONTIERS IN BIOINFORMATICS, 2026", title: "Machine learning-based determination of sex-related bladder cancer biomarkers", body: "Pizzi, J.R., Adhikari, I., Prakash, P., Miyamoto, H., and Cui, F.", href: "https://doi.org/10.3389/fbinf.2026.1794098" },
           null,
           { kicker: "PAPER 02 · NATURE COMMUNICATIONS, 2026", title: "Intrinsic DNA codes govern distinct modes of nucleosome and transcription factor interactions", body: "Carson, C.W., Nagalakshmi, S.U., Adhikari, I., Freewoman, J.M., Pizzi, J.R., Prakash, P., and Cui, F.", href: "https://doi.org/10.1038/s41467-026-74448-4" },
@@ -2416,9 +2416,9 @@
         id: "projects",
         title: "Projects",
         roman: "IV",
-        discipline: "Three things that run",
+        discipline: "Two things that run",
         note: "Each one opens the live site, not a write-up.",
-        deck: "Three projects, each of which opens the thing itself: a live dashboard, a live dashboard, and a repository.",
+        deck: "Two projects, each of which opens the thing itself — both of them live dashboards.",
         panel: `
           <div class="sheet">
             <article class="proj">
@@ -2431,20 +2431,15 @@
               <p>Rebuilt the training data for phosphorylation site prediction. The field calls every unreported residue a negative; this verifies them instead, turning 24.4M peptide-spectrum matches into 361,789 checked sites and cutting a trypsin sampling bias from 33.2% to 3.6%.</p>
               <p class="stack">Python &middot; Pandas &middot; NumPy &middot; UniProt</p>
             </article>
-            <article class="proj">
-              <a class="go-btn" href="https://github.com/Prakyatp/carebridge" target="_blank" rel="noopener">CareBridge <span class="go">&#8599;</span></a>
-              <p>A cost navigator for people deciding whether to have a procedure done abroad. Pricing, treatment length and recovery time across ten countries and thirty procedures, with a retrieval chatbot over it and the patient journey modelled as a graph.</p>
-              <p class="stack">Python &middot; RAG &middot; Neo4j &middot; LLMs &middot; Vector DB</p>
-            </article>
           </div>`,
-        chapters: ["WC2026", "PTM Negatives", "CareBridge"],
+        chapters: ["WC2026", "PTM Negatives", "Pipelines"],
         pages: [
-          { kicker: "THREE THINGS THAT RUN", title: "Projects", body: "Every page in this volume opens the live site. Click a page to go there." },
+          { kicker: "TWO THINGS THAT RUN", title: "Projects", body: "Every page in this volume opens the live site. Click a page to go there." },
           { kicker: "PROJECT 01 · LIVE DASHBOARD", title: "WC2026 Hydration Break Analyzer", image: "/assets/preview/wc2026.jpg", href: "https://prakyatp.github.io/wc2026-break-analyzer/" },
           { kicker: "PROJECT 02 · LIVE DASHBOARD", title: "PTM Dataset Extraction Pipeline", image: "/assets/preview/ptm.jpg", href: "https://prakyatp.github.io/PTM_Negatives_Extraction/" },
-          { kicker: "PROJECT 03 · REPOSITORY", title: "CareBridge", image: "/assets/preview/carebridge.jpg", href: "https://github.com/Prakyatp/carebridge" },
           { kicker: "PROJECT 01", title: "Momentum across the whistle", body: "Pressing teams lose momentum across the break; the teams being pressed gain it.", href: "https://prakyatp.github.io/wc2026-break-analyzer/" },
           { kicker: "PROJECT 02", title: "Verified, not assumed", body: "24.4M peptide-spectrum matches into 361,789 checked sites.", href: "https://prakyatp.github.io/PTM_Negatives_Extraction/" },
+          null,
           null,
           null
         ],
@@ -2463,11 +2458,11 @@
           light: "#e5edf2",
           fill: "#5f85dc"
         },
-        theme: "Three things that run",
+        theme: "Two things that run",
         motif: "Connected modules",
         motifKey: "modules",
-        binding: "Python, Next.js, Neo4j and retrieval",
-        format: "Three projects, all live",
+        binding: "Python, Next.js and GitHub Actions",
+        format: "Two projects, both live",
         width: 1.08,
         height: 1.66,
         depth: 0.27,
@@ -2485,6 +2480,7 @@
             <p class="kicker">Open to 2026 SWE and ML roles</p>
             <a class="mail" href="mailto:prakyat02@gmail.com">prakyat02@gmail.com</a>
             <div class="social">
+              <a class="go-btn" href="mailto:prakyat02@gmail.com">Email <span class="go">&#8599;</span></a>
               <a class="go-btn" href="https://www.linkedin.com/in/prakyatp" target="_blank" rel="noopener">LinkedIn <span class="go">&#8599;</span></a>
               <a class="go-btn" href="https://github.com/Prakyatp" target="_blank" rel="noopener">GitHub <span class="go">&#8599;</span></a>
               <a class="go-btn" href="/resume.pdf" target="_blank" rel="noopener">Resume <span class="go">&#8599;</span></a>
@@ -2632,6 +2628,88 @@
     let lastTime = performance.now();
     let mode = "hero";
     let transitionTime = 0;
+
+    /* ── smoothness ──────────────────────────────────────────────────────────
+       This scene is fill-rate bound, not CPU bound: profiling a browse left the
+       CPU 82% idle, and disabling the shadow pass outright changed nothing. What
+       costs is pixels. On a 2× display the authored cap draws 2880×1800 with MSAA
+       on top, which measured 66.7ms a frame — 15fps, and exactly the clunk you
+       feel. So the resolution earns its keep: start where the machine is likely
+       to cope, then climb or fall by one step based on what frames actually cost,
+       with a wide dead band so it settles instead of hunting. */
+    const RESOLUTION_LADDER = [1, 1.25, 1.5, 1.75, 2];
+    /* 60fps is the goal, not the display's own rate: this scene will not hold 120, and
+       chasing it would only cost sharpness for frames nobody perceives. */
+    const FRAME_TARGET = 1 / 60;
+    /* Seeded between the two thresholds: neither branch fires until real frames have
+       moved the average, so the ladder never guesses before it has measured. */
+    const FRAME_UNDECIDED = FRAME_TARGET * 1.18;
+    let resolutionIndex = 0;
+    let resolutionCeiling = RESOLUTION_LADDER.length - 1;
+    let resolutionBlocked = Infinity;
+    let frameCost = FRAME_UNDECIDED;
+    let resolutionCooldown = 0;
+
+    function deviceCeiling() {
+      const device = window.devicePixelRatio || 1;
+      const cap = Math.min(device, viewWidth < 820 ? 1.5 : 2);
+      let index = 0;
+      RESOLUTION_LADDER.forEach((step, i) => {
+        if (step <= cap + 0.001) index = i;
+      });
+      return index;
+    }
+
+    function applyResolution() {
+      renderer.setPixelRatio(RESOLUTION_LADDER[resolutionIndex]);
+      renderer.setSize(viewWidth, viewHeight, false);
+    }
+
+    /* A fresh ceiling (first run, or a resize onto another display) starts the search
+       again: one step below the top, because full resolution is the thing being tested
+       rather than the thing being assumed. */
+    function resetResolution() {
+      resolutionCeiling = deviceCeiling();
+      // Reduced motion never runs the loop for long, so there is nothing to adapt to and
+      // no reason to spend its sharpness: it gets the full ratio and keeps it.
+      resolutionIndex = reducedMotion ? resolutionCeiling : Math.max(0, resolutionCeiling - 1);
+      resolutionBlocked = Infinity;
+      resolutionCooldown = 0.9;
+      frameCost = FRAME_UNDECIDED;
+      applyResolution();
+    }
+
+    /* The search only ever walks down past a step it has proved too slow, and never
+       climbs back into one. Without that memory the two steps either side of the
+       machine's real limit trade places forever, and the picture visibly breathes. */
+    function adaptResolution(rawDelta) {
+      if (resolutionCooldown > 0) {
+        resolutionCooldown -= rawDelta;
+        return;
+      }
+      frameCost += (Math.min(rawDelta, 0.25) - frameCost) * 0.08;
+
+      let settle;
+      if (frameCost > FRAME_TARGET * 1.25 && resolutionIndex > 0) {
+        resolutionBlocked = resolutionIndex;
+        resolutionIndex -= 1;
+        settle = 0.35;  // drop quickly: the descent to a usable step is visible, so keep it short
+      } else if (
+        frameCost < FRAME_TARGET * 1.12
+        && resolutionIndex < resolutionCeiling
+        && resolutionIndex + 1 < resolutionBlocked
+      ) {
+        resolutionIndex += 1;
+        settle = 1.2;   // climb slowly: a step up is a bet, and a wrong one costs a drop back
+      } else {
+        return;
+      }
+
+      resolutionCooldown = settle;
+      frameCost = FRAME_UNDECIDED;
+      applyResolution();
+    }
+
     let position = 0;
     let targetPosition = 0;
     let selectedIndex = 0;
@@ -6294,9 +6372,11 @@
 
     function frame(time) {
       rafId = 0;
-      const delta = Math.min((time - lastTime) / 1000, 0.05);
+      const rawDelta = (time - lastTime) / 1000;
+      const delta = Math.min(rawDelta, 0.05);
       const elapsed = time / 1000;
       lastTime = time;
+      if (!reducedMotion) adaptResolution(rawDelta);
 
       if (pointerDirty) updateHover();
       updateShelfLayout(delta, elapsed);
@@ -6320,6 +6400,7 @@
       renderer.render(scene, camera);
 
       const shelfMoving = Math.abs(position - targetPosition) > 0.0005 || wheelIdle > 0;
+
       const shouldContinue = !reducedMotion
         || mode === "opening"
         || mode === "closing"
@@ -6332,8 +6413,7 @@
       viewWidth = window.innerWidth;
       viewHeight = window.innerHeight;
       configureResponsiveTargets();
-      renderer.setSize(viewWidth, viewHeight, false);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, viewWidth < 820 ? 1.5 : 2));
+      resetResolution();
       camera.aspect = viewWidth / viewHeight;
       camera.updateProjectionMatrix();
 
@@ -6524,7 +6604,10 @@
       try {
         renderer = new THREE.WebGLRenderer({
           canvas,
-          antialias: true,
+          /* Multisampling is for the case where one canvas pixel is one screen
+             pixel. Above that the display is already averaging, and at 2× it
+             measured ~8ms a frame for a difference you cannot see. */
+          antialias: (window.devicePixelRatio || 1) < 1.5,
           alpha: true,
           powerPreference: "high-performance"
         });
@@ -6615,6 +6698,16 @@
       previousPageButton.addEventListener("click", () => turnPage(-1));
       nextPageButton.addEventListener("click", () => turnPage(1));
       resetButton.addEventListener("click", resetInspectionView);
+
+      /* Every stutter measured on this page was a first-use cost: a shader program
+         resolved, or a texture uploaded, on the frame that first needed it — a browse
+         or a close would drop a single ~230ms frame while the CPU sat idle. Pay for
+         all of it here instead, behind the loader that is already on screen. */
+      if (typeof renderer.compileAsync === "function") {
+        await renderer.compileAsync(scene, camera);
+      } else {
+        renderer.compile(scene, camera);
+      }
 
       renderer.render(scene, camera);
       loading.hidden = true;

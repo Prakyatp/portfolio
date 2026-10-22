@@ -51,6 +51,15 @@ export const site = {
   ],
 };
 
+// The contact section renders these in order. `hint` is what the link is for, said plainly,
+// so the section reads as a list of ways to reach him rather than a row of logos.
+export const contactLinks: { label: string; href: string; hint: string }[] = [
+  { label: 'Email', href: 'mailto:prakyat02@gmail.com', hint: 'prakyat02@gmail.com' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/prakyatp', hint: 'linkedin.com/in/prakyatp' },
+  { label: 'GitHub', href: 'https://github.com/Prakyatp', hint: 'github.com/Prakyatp' },
+  { label: 'Resume', href: '/resume.pdf', hint: 'PDF, one page' },
+];
+
 export const education = {
   school: 'Rochester Institute of Technology',
   abbr: 'RIT',
@@ -70,7 +79,7 @@ export const education = {
 export const research = {
   lead: 'Getting signal out of noisy biology',
   body: [
-    'I work in the Cui Lab at RIT on machine learning for molecular biology: which computational methods survive contact with a real experiment, and which quietly learn the shape of the experiment instead.',
+    'I have worked in two labs at RIT, the KC Lab and the Cui Lab, and I am a Graduate Research Assistant in the Cui Lab. The work is machine learning and deep learning on life science and genomics: which computational methods survive contact with a real experiment, and which quietly learn the shape of the experiment instead.',
     'Two threads right now. Building rigorous extraction pipelines for post-translational modification data, which meant correcting an assumption the field had accepted for years. And studying genomics and 3D chromatin organization with deep learning models.',
   ],
 };
@@ -123,20 +132,6 @@ export const projects: Project[] = [
     cover: {
       src: '/assets/preview/ptm.jpg',
       alt: 'The PTM extraction dashboard, showing dataset summary counts across five repositories',
-    },
-  },
-  {
-    index: '03',
-    title: 'CareBridge',
-    year: '2026',
-    blurb:
-      'A cost navigator for people deciding whether to have a procedure done abroad. Pricing, treatment length and recovery time structured across ten countries and thirty procedures, with a retrieval chatbot over it and the patient journey modelled as a graph.',
-    stack: ['Python', 'RAG', 'Neo4j', 'LLMs', 'Vector DB'],
-    href: 'https://github.com/Prakyatp/carebridge',
-    destination: 'Repository',
-    cover: {
-      src: '/assets/preview/carebridge.jpg',
-      alt: 'The CareBridge interface, comparing the cost of procedures across countries',
     },
   },
 ];
@@ -193,11 +188,3 @@ export const skills: { group: string; items: string[] }[] = [
     items: ['PyTorch', 'TensorFlow', 'Scikit-learn', 'Pandas', 'NumPy', 'LangChain', 'RAG'],
   },
 ];
-
-// ── Off the clock ────────────────────────────────────────────────────────────
-// TODO(prakyat): the only writing here that is not already yours. Keep it to one honest line
-// and swap the interests for what you actually spend time on.
-export const offTheClock = {
-  line: 'Away from work I play blackjack, take apart games for the systems underneath, and build small things to answer questions I got curious about.',
-  interests: ['Blackjack', 'Gaming', 'Side projects', 'Football data'],
-};

@@ -18,9 +18,9 @@ the five sections of the CV.
 | | Volume | The panel holds |
 |---|---|---|
 | I | **Education** | RIT, the dates, the degree, the six courses |
-| II | **Research** | one line on ML and deep learning in genomics, then both papers as cards linking to their DOIs |
+| II | **Research** | ML and deep learning in genomics, the KC Lab and the Cui Lab, then both papers as cards linking to their DOIs |
 | III | **Experience** | both roles with org, dates, place and three bullets each |
-| IV | **Projects** | three blocks, each led by the button to the live site |
+| IV | **Projects** | two blocks, each led by the button to the live site |
 | V | **Contact** | email, LinkedIn, GitHub, résumé |
 
 Each volume is a real hardcover in the scene: cloth with a woven normal and roughness map,
@@ -50,6 +50,50 @@ The book gives up room to the panel: the inspect scale floor drops from 0.9 to 0
 world placement is pulled back from −2.25 to −1.52 because the wider panel already doubled the
 camera's view offset, and the two together walked the book off the left edge.
 
+### Smoothness
+
+The shelf was clunky, and the reason was not what it looked like.
+
+| | canvas | frame time | fps |
+|---|---|---|---|
+| As authored, on a 2× display | 2880 × 1800 | **66.7ms** | **15** |
+| Pixel ratio 1.5, MSAA on | 2160 × 1350 | 41.6ms | 24 |
+| Pixel ratio 1.5, MSAA off | 2160 × 1350 | 33.4ms | 30 |
+| Pixel ratio 1.25, MSAA off | 1800 × 1125 | 25.0ms | 40 |
+| **Now, adaptive** | settles at 1440 × 900 here | **16.7ms** | **60** |
+
+**This scene is fill-rate bound.** A CPU profile of a browse came back 82% idle, and the JS in
+it was noise. What costs is pixels: the authored `Math.min(devicePixelRatio, 2)` draws four
+times the area on a retina laptop, with multisampling on top of that.
+
+Two things were tried first and are recorded here so nobody spends the afternoon again.
+**Gating the shadow pass did nothing** — the obvious theory is that a 2048² PCF-soft shadow
+re-rendered every frame for drifting dust must be the cost, but disabling shadows *entirely*
+moved the median frame time by 0.3ms. **The 230ms stalls were the machine, not the page**: they
+vanished once the measurement stopped running next to a build. Interleaving variants across
+rounds, one browser process each, is what finally produced numbers that agreed with themselves.
+
+So the resolution adapts. A ladder of ratios `[1, 1.25, 1.5, 1.75, 2]`, capped by the device,
+walks down whenever the smoothed frame cost exceeds 1.25 × a 60fps budget and climbs when it
+falls under 1.12 ×. Three details matter:
+
+- **It remembers what was too slow.** Without `resolutionBlocked`, the two steps either side of
+  the machine's real limit trade places forever and the picture visibly breathes.
+- **It is seeded undecided**, between the two thresholds. Seeded at the target it read as
+  "comfortably fast", so the first move after every reset was a climb that immediately failed.
+- **Dropping takes 0.35s, climbing 1.2s.** The descent is visible, so it is short; a climb is a
+  bet, so it is slow.
+
+Measured here: it walks 1.75 → 1 inside the first second, then holds for twenty with zero
+further changes, and re-searches to 1.5 when the window narrows. Multisampling is now off above
+1×, where the display is already averaging and it measured ~8ms a frame for no visible
+difference. Reduced motion skips the whole mechanism and keeps full resolution, because nothing
+is animating for it to adapt to.
+
+The honest cost: on this machine it settles at ratio 1 and the covers are softer than the
+authored render. 60fps was the right side of that trade for a page whose whole job is to feel
+good to move through — and on a faster GPU the ladder simply stops higher.
+
 ---
 
 ## Direction: the plain page
@@ -75,11 +119,24 @@ written into the document itself. That is the one duplication in the build, and 
 **It prints.** `@media print` drops the actions, the nav and the footer, keeps entries off page
 breaks, and appends the href after every external link, so a printed copy still carries its URLs.
 
+It is set like a document rather than like the rest of the site: **Newsreader** for the name and
+the things you scan for, **Inter** for the things you actually read, DM Mono for the labels.
+Newsreader is a *text* serif, which is why it holds at the 19px entry titles where a display cut
+would go thin. The vertical rhythm is named once at the top of `read.css` — an earlier draft
+inherited the drawer's section spacing, which is sized for full-bleed panels and left craters
+between the sections of a document.
+
+Each project leads with its screenshot, and **the screenshot is the link**, as it is inside the
+book. The picture is `aria-hidden` with `tabIndex={-1}` so the keyboard and the screen reader get
+one target for the project, not three. Contact is a list of ways to reach him — email, LinkedIn,
+GitHub, résumé — each with the address spelled out, rather than a row of unlabelled pills.
+
 | | |
 |---|---|
 | `src/app/read/page.tsx` | the document, a server component |
 | `src/app/read/read.css` | its own stylesheet, built from the tokens in `globals.css` |
 | `public/resume.pdf` | the résumé, served under a readable download name |
+| `src/app/fonts.ts` | `readSerif` / `readSans`, loaded for this page only |
 
 The résumé PDF carries a phone number; the page does not. A résumé is handed to someone, and a
 public page is scraped by anyone, so the number stays in the file you send.
@@ -169,8 +226,10 @@ Production build, driven in a real browser. Scripts in `.qa/` (gitignored).
 
 | | Result |
 |---|---|
-| Five sections at 1440 × 900 | **no overflow in any of them**; scale 1.0, 1.0, 1.0, 0.825, 1.0 |
-| Experience, now two roles | 6 bullets, scale 1.0, no overflow |
+| Five sections at 1440 × 900 | **no overflow in any of them**, all five now at scale 1.0 — dropping the third project let that panel back up from 0.825 |
+| Experience, two roles | 6 bullets, scale 1.0, no overflow |
+| Frame time on a 2× display | **66.7ms → 16.7ms**, 15fps → 60fps |
+| The resolution ladder | walks 1.75 → 1 inside a second, then **zero changes over the next 19s**; re-searches to 1.5 when the window narrows |
 | The masthead at 9 widths, 390 to 1920 | the name never reaches the links, nothing leaves the viewport |
 | The two masthead links | clickable through the header's `pointer-events: none`, and they hit-test to themselves |
 | `/read` from inside the frame | opens in a new tab — the authored sandbox allows popups, not top navigation |
@@ -179,13 +238,13 @@ Production build, driven in a real browser. Scripts in `.qa/` (gitignored).
 | Keyboard | the two links are **first** in the frame's tab order, and `:focus-visible` draws the authored 1px ring |
 | `/read` at 1440 and 390 | 7 sections, 2 roles, 6 courses, 2 papers, 3 projects, 5 skill groups, no horizontal scroll |
 | `/read` with reveals | 0 sections hidden by motion — nothing waits for JavaScript |
-| `/read` with JavaScript off | 7 sections, both roles, 4,888 characters of text |
+| `/read` with JavaScript off | 7 sections, both roles, 4,639 characters of text |
 | `/read` against axe-core, WCAG 2.1 AA | **0 violations**; the heading outline runs h1 → h2 → h3 with no skips |
 | Education at 390 × 844 | fits at 0.825, no horizontal scroll |
 | Links in the panels | 2 DOIs, 3 project URLs, 4 contact links — all correct |
 | Tap a page in the Projects book | cursor reads `has-page-link`, tap opened the PTM dashboard |
 | Book clears the panel | yes, after the placement correction |
-| No WebGL | catalog shown, five columns, all five section titles, both links present |
+| No WebGL | catalog shown, five section titles, both links present, footer says two projects |
 | Reduced motion | opening and closing both land at once; panel fits at 1.0 |
 | Console errors, host and frame | **0** |
 
@@ -210,8 +269,12 @@ does not apply. Add `transition: none` before measuring, or measure a screenshot
 Nothing on this page is written by me — every date, course, author list, journal, metric and
 project description is yours.
 
-Two things you may want to change:
+Three things you may want to change:
 
+- **CareBridge is no longer on the site**, at his request: Projects is the two live dashboards.
+  `public/assets/preview/carebridge.jpg` is still in the repo, unreferenced, so putting it back
+  is a matter of restoring one entry in `projects` and one `<article class="proj">` in the
+  Projects volume. The `offTheClock` export went the same way and is in the history.
 - **Experience follows the October 2026 résumé: two roles, three bullets each.** That résumé
   drops Handshake AI and re-dates Acinonyx to Jan–Apr 2025 as a remote contract, carrying the
   bullets the site previously credited to Handshake. If that is a renaming rather than a
