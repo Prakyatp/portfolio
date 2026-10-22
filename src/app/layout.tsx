@@ -1,9 +1,7 @@
 import type { Metadata } from 'next';
-import { Footer } from '@/components/Footer';
-import { Header } from '@/components/Header';
 import { Motion } from '@/components/Motion';
 import { site } from '@/data/site';
-import { sans, mono } from './fonts';
+import { sans, mono, serif } from './fonts';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -37,7 +35,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${sans.variable} ${mono.variable} ${serif.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: flags }} />
       </head>
@@ -50,11 +48,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="curtain__edge" />
           </div>
         </div>
-        <Header />
         <main id="main" tabIndex={-1}>
           {children}
         </main>
-        <Footer />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
