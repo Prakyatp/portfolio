@@ -57,7 +57,7 @@ html.scrolled .readbar {
 .readbar__inner {
   max-width: 46rem;
   margin: 0 auto;
-  padding: 0.6rem var(--gutter);
+  padding: 0.35rem var(--gutter);
   display: flex;
   align-items: center;
   gap: var(--s-4);
@@ -80,17 +80,40 @@ html.scrolled .readbar {
   /* On a narrow window the links scroll sideways rather than stacking, so the bar
      keeps one row and never eats the screen. */
   overflow-x: auto;
+  overscroll-behavior-x: contain;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding: 0.35rem 0;
 }
 
 .readbar__nav::-webkit-scrollbar {
   display: none;
 }
 
+/* Six labels do not fit on a phone, so the row scrolls — and a row that scrolls with no
+   edge to it looks like a row that ends. The mask says which way there is more; JS sets
+   `data-edge`, and with JS off the row is simply unmasked and still scrollable. */
+.readbar__nav[data-edge='end'] {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
+}
+
+.readbar__nav[data-edge='start'] {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 2rem);
+  mask-image: linear-gradient(to right, transparent, #000 2rem);
+}
+
+.readbar__nav[data-edge='both'] {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 2rem, #000 calc(100% - 2rem), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 2rem, #000 calc(100% - 2rem), transparent);
+}
+
 .readbar__nav a {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  /* A finger-sized target, on every screen rather than only the small ones: 12px of text
+     with nothing around it was a 20px row, which is a miss waiting to happen. */
+  min-height: 2.75rem;
   color: var(--c-muted);
   white-space: nowrap;
   transition: color 160ms var(--ease);
@@ -109,7 +132,7 @@ html.scrolled .readbar {
   content: '';
   position: absolute;
   right: 0;
-  bottom: -0.3rem;
+  bottom: 0.45rem;
   left: 0;
   height: 1.5px;
   border-radius: 2px;
@@ -213,11 +236,25 @@ html.scrolled .readbar {
   font-size: var(--t-mono);
 }
 
-/* A rule between the items, not a character: a border cannot end up inside the link
-   next to it, so the email stays an email and the divider stays furniture. */
-.read__meta > * + * {
-  padding-left: var(--s-3);
-  border-left: 1px solid var(--c-line-strong);
+/* A rule between the items, not a character: it hangs off the wrapper, so it cannot end up
+   inside the link next to it. Trailing rather than leading, so that when the strip wraps a
+   new line starts with content instead of a stray divider. */
+.read__meta-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* The padding has to be on the anchor, not the wrapper: the wrapper is not what you tap. */
+.read__meta-item a,
+.read__meta-item > :not(a) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.6rem;
+}
+
+.read__meta-item:not(:last-child) {
+  padding-right: var(--s-3);
+  border-right: 1px solid var(--c-line-strong);
 }
 
 .read__meta a {
@@ -404,7 +441,8 @@ html.scrolled .readbar {
   display: inline-flex;
   align-items: center;
   gap: 0.3em;
-  margin-top: 0.45rem;
+  min-height: 1.6rem;
+  margin-top: 0.3rem;
   color: var(--c-accent);
   font-size: var(--t-s);
   font-weight: 500;
@@ -546,7 +584,54 @@ html.scrolled .readbar {
   }
 }
 
+/* On a phone the six labels cannot share a line with the name, so they take their own row
+   and run full-bleed to the screen edges, which buys back both gutters of scrolling. */
 @media (max-width: 34rem) {
+  .readbar__inner {
+    flex-wrap: wrap;
+    padding: 0.3rem 0 0;
+    column-gap: var(--s-3);
+    row-gap: 0;
+  }
+
+  .readbar__mark,
+  .readbar__cta {
+    margin-top: 0.15rem;
+  }
+
+  .readbar__mark {
+    font-size: 0.9375rem;
+  }
+
+  .readbar__cta {
+    padding: 0.3em 0.7em;
+  }
+
+  .readbar__mark {
+    margin-right: auto;
+    margin-left: var(--gutter);
+  }
+
+  .readbar__cta {
+    margin-right: var(--gutter);
+  }
+
+  .readbar__nav {
+    order: 3;
+    width: 100%;
+    margin-right: 0;
+    gap: var(--s-4);
+    padding: 0 var(--gutter);
+  }
+
+  .readbar__nav a {
+    min-height: 2.25rem;
+  }
+
+  .readbar__nav a[aria-current='true']::after {
+    bottom: 0.22rem;
+  }
+
   .skillset__group {
     grid-template-columns: 1fr;
     gap: 0.15rem;
@@ -559,6 +644,23 @@ html.scrolled .readbar {
 
   .contact__hint {
     grid-column: 1;
+  }
+}
+
+/* A short window — a phone on its side, a split screen — cannot spare 56px of chrome at
+   the top, so the bar gets thinner rather than taking a tenth of the screen. */
+@media (max-height: 480px) {
+  .readbar__inner {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .readbar__nav a {
+    min-height: 2.25rem;
+  }
+
+  .readbar__nav a[aria-current='true']::after {
+    bottom: 0.25rem;
   }
 }
 

@@ -41,9 +41,7 @@ export default function Read() {
           <a className="readbar__mark" href="#top">
             {site.name}
           </a>
-          <nav className="readbar__nav" aria-label="Sections">
-            <ReadNav sections={SECTIONS} />
-          </nav>
+          <ReadNav sections={SECTIONS} />
           <a className="readbar__cta" href="/resume.pdf" download={RESUME_FILE}>
             Résumé ↓
           </a>
@@ -70,17 +68,24 @@ export default function Read() {
         </div>
       </header>
 
+      {/* Every item is wrapped, so the rule between them hangs off the wrapper and can
+          never end up inside the link next to it. Trailing rather than leading, so a line
+          that wraps starts with content instead of a stray divider. */}
       <p className="read__meta">
-        <a href={`mailto:${site.email}`}>{site.email}</a>
-        <span>{site.location}</span>
+        <span className="read__meta-item">
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+        </span>
+        <span className="read__meta-item">{site.location}</span>
         {site.socials
           .filter((s) => s.href.startsWith('http'))
           .map((s) => (
-            <a key={s.label} href={s.href} target="_blank" rel="noopener">
-              {s.label}
-            </a>
+            <span className="read__meta-item" key={s.label}>
+              <a href={s.href} target="_blank" rel="noopener">
+                {s.label}
+              </a>
+            </span>
           ))}
-        <span>{site.availability}</span>
+        <span className="read__meta-item">{site.availability}</span>
       </p>
 
       <section className="read__section" aria-labelledby="summary-h">

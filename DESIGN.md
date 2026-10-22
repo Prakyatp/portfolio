@@ -120,6 +120,14 @@ written into the document itself. That is the one duplication in the build, and 
 **When you change a role, a course or a paper, change both** — `src/data/site.ts` and the
 `BOOKS` array in `public/landing-pages/complete-shelf-v2.html`.
 
+**It works on a phone.** Six section labels cannot share a line with the name below about
+430px, so under 34rem the bar goes to two rows and the links run full-bleed and scroll
+sideways. A row that scrolls with no edge to it looks like a row that ends, so a mask says
+which way there is more, and the marked section is kept scrolled into view — on a 320px phone
+that is the difference between a table of contents and a row that appears to stop at
+"Research". Every link and every item in the contact strip is at least a 24px target, and the
+bar thins to 37px on a short window instead of eating a tenth of it.
+
 **The table of contents stays reachable.** A sticky bar carries the name, the six section
 links and the résumé, and the link for whatever you are reading is marked. Only the marking
 needs JavaScript — an `IntersectionObserver` watching a band just under the bar — so with JS
@@ -152,6 +160,30 @@ GitHub, résumé — each with the address spelled out, rather than a row of unl
 
 The résumé PDF carries a phone number; the page does not. A résumé is handed to someone, and a
 public page is scraped by anyone, so the number stays in the file you send.
+
+### Small screens
+
+Everything from a tablet up fits with nothing to scroll. Two cases cannot, and they are sized
+on their own rather than in the general narrow block, so a normal phone — which does fit — is
+left alone.
+
+| | panel | type | result |
+|---|---|---|---|
+| 320 × 568 | `min(68vh, 460px)` | floor, 0.685 | ~31px of scroll |
+| 844 × 390, a phone on its side | the desktop shape, right-hand side | floor, 0.685 | a short scroll |
+| 390 × 844 and up | as before | 0.825 → 1.0 | **fits exactly** |
+
+**The type floor was 0.5, which is 8px.** On a small phone the panel bottomed out there and
+still clipped, so the reader got neither the size nor the content. It stops at 11px now, and
+the remainder is reachable by scrolling. A phone cannot show six courses beside a book at a
+size anyone can read; between unreadable-and-clipped and readable-and-scrollable, the second
+is the honest answer. Nothing at tablet size or above ever reaches the floor.
+
+One trap worth recording. Adding `overflow-y: auto` to the panel did nothing on its own: a
+scroll container builds its scrollable area from its children's *boxes*, and `.detail-body` is
+`flex: 0 1 auto`, so it shrank to the height flex gave it however far its text spilled past.
+The panel saw a child that fitted. It takes `flex: 0 0 auto` as well — the body at its real
+height — before the panel can see, and scroll, what is actually there.
 
 ---
 
@@ -249,7 +281,8 @@ Production build, driven in a real browser. Scripts in `.qa/` (gitignored).
 | The masthead while a volume is open | gone at 1440×900, 1280×720 and 1512×820: opacity 0, `visibility: hidden`, no geometry over the close button, and the close button still the top hit |
 | The sticky bar | pinned at top 0 after a 2200px scroll, the top hit at its own centre, and a jump from it lands the heading clear of it (76px desktop, 64px mobile) |
 | Keyboard | the two links are **first** in the frame's tab order, and `:focus-visible` draws the authored 1px ring |
-| `/read` at 1440 and 390 | 7 sections, 2 roles, 6 courses, 2 papers, 3 projects, 5 skill groups, no horizontal scroll |
+| `/read` at 1440 and 390 | 7 sections, 2 roles, 6 courses, 2 papers, 2 projects, 5 skill groups, no horizontal scroll |
+| Both pages at 13 sizes, 320 → 2560 | no horizontal scroll anywhere; no tap target under 24px; the shelf panel fits exactly from 390×844 up and is scrollable, never clipped, below that |
 | `/read` with reveals | 0 sections hidden by motion — nothing waits for JavaScript |
 | `/read` with JavaScript off | 7 sections, both roles, 4,639 characters of text |
 | `/read` against axe-core, WCAG 2.1 AA | **0 violations**; the heading outline runs h1 → h2 → h3 with no skips |

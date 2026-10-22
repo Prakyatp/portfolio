@@ -2076,6 +2076,65 @@
       }
     }
 
+
+    /* ── screens that cannot win on height ───────────────────────────────────
+       Everything from a tablet up fits with nothing to scroll. These two cases
+       cannot: a small phone has 568px of height to share between a book and six
+       courses, and a phone on its side has less. Both are sized here rather than
+       in the general narrow block, so a normal phone (which does fit) is untouched. */
+
+    /* A short phone. The panel takes more of the screen, and where even that is not
+       enough the rest is reachable by scrolling instead of simply absent. */
+    @media (max-width: 880px) and (max-height: 700px) {
+      .detail-panel {
+        bottom: 66px;
+        height: min(68vh, 460px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+      }
+
+      /* `flex: 0 1 auto` is what makes the no-scroll panel work everywhere else: the body
+         shrinks and `fitPanel` sizes the type to the box it is given. Here the box cannot
+         be made big enough, and a shrunk body hides the problem from its parent — the
+         panel's scrollable area is built from its children's boxes, and the body's box is
+         still the size flex gave it however far its text spills. Let it take its real
+         height and the panel can finally see, and scroll, what is there. */
+      .detail-body {
+        overflow: visible;
+        flex: 0 0 auto;
+      }
+    }
+
+    /* A phone on its side, or a split screen: width to spare and no height at all,
+       which is the shape the desktop layout is already built for. Last, because a
+       landscape phone matches the block above as well. */
+    @media (max-height: 520px) and (min-width: 700px) {
+      .detail-panel {
+        top: 50%;
+        right: 16px;
+        bottom: auto;
+        left: auto;
+        width: min(50vw, 480px);
+        height: auto;
+        max-height: 92vh;
+        transform: translateY(-50%);
+        overflow-y: auto;
+      }
+
+      .mode-detail .detail-panel {
+        transform: translateY(-50%);
+      }
+
+      .detail-body {
+        overflow: visible;
+        flex: 0 0 auto;
+      }
+
+      .detail-title {
+        font-size: clamp(1.7rem, 4vw, 2.4rem);
+      }
+    }
+
   </style>
   <script type="importmap">
     {
@@ -5137,13 +5196,21 @@
       if (!detailBody) return;
       for (let step = 0; step < 20; step += 1) {
         const scale = 1 - step * 0.035;
+        // Never apply a size below the floor: stepping past it and then breaking would
+        // leave the panel wearing the very size the floor exists to prevent.
+        if (scale < 0.68) break;
         detailBody.style.setProperty("--panel-scale", scale.toFixed(3));
         // Both have to be asked. A short section leaves the panel under its
         // ceiling and nothing is clipped; a long one pins the panel at the
         // ceiling and the clipping shows up inside the body instead.
         const panelFits = detailPanel.scrollHeight <= detailPanel.clientHeight + 1;
         const bodyFits = detailBody.scrollHeight <= detailBody.clientHeight + 1;
-        if ((panelFits && bodyFits) || scale <= 0.5) break;
+        /* The floor used to be 0.5, which is 8px type. On a small phone the panel
+           bottomed out there and still clipped, so the reader got neither the size nor
+           the content. Stop at 11px instead; the short-screen rules below let the
+           remainder be scrolled. Nothing at tablet size or above reaches this — the
+           lowest measured anywhere else is 0.825. */
+        if (panelFits && bodyFits) break;
       }
     }
 
