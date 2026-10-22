@@ -1647,11 +1647,19 @@
       grid-column: 3;
     }
 
-    /* The name belongs to the shelf; reading a volume is its own view. The two links are
-       not part of that — they are the way out for someone who does not want the shelf at
-       all, so they stay put while everything around them fades. */
-    .mode-detail .editorial-identity {
+    /* Reading a volume is its own view, and the whole masthead goes — links included.
+       They used to stay, as the way out for someone who does not want the shelf at all,
+       but the panel's close button lands in that same corner and the two sat on top of
+       each other. The shelf is one Escape away and the links are waiting there.
+       `visibility` rides the fade out and snaps back on the way in, so the links leave
+       the tab order while they are invisible instead of lurking in it. */
+    .mode-detail .editorial-header {
       opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition:
+        opacity 520ms var(--ease-out),
+        visibility 0s linear 520ms;
     }
 
     .site-actions {

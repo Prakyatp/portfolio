@@ -10,6 +10,7 @@ import {
   site,
   skills,
 } from '@/data/site';
+import { ReadNav, type Section } from './ReadNav';
 import { readSans, readSerif } from '../fonts';
 import './read.css';
 
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/read' },
 };
 
-const SECTIONS = [
+const SECTIONS: Section[] = [
   { id: 'education', label: 'Education' },
   { id: 'experience', label: 'Experience' },
   { id: 'research', label: 'Research' },
@@ -32,7 +33,24 @@ const RESUME_FILE = 'Prakyat-Prakash-Resume.pdf';
 
 export default function Read() {
   return (
-    <article className={`read ${readSerif.variable} ${readSans.variable}`}>
+    <div className={`readpage ${readSerif.variable} ${readSans.variable}`}>
+      {/* Sticky, so the table of contents is reachable from anywhere in the document.
+          It sits outside the article because it spans the window, not the text column. */}
+      <div className="readbar">
+        <div className="readbar__inner">
+          <a className="readbar__mark" href="#top">
+            {site.name}
+          </a>
+          <nav className="readbar__nav" aria-label="Sections">
+            <ReadNav sections={SECTIONS} />
+          </nav>
+          <a className="readbar__cta" href="/resume.pdf" download={RESUME_FILE}>
+            Résumé ↓
+          </a>
+        </div>
+      </div>
+
+      <article className="read" id="top">
       <header className="read__top">
         <div>
           <h1 className="read__name">{site.name}</h1>
@@ -64,14 +82,6 @@ export default function Read() {
           ))}
         <span>{site.availability}</span>
       </p>
-
-      <nav className="read__nav" aria-label="Sections">
-        {SECTIONS.map((s) => (
-          <a key={s.id} href={`#${s.id}`}>
-            {s.label}
-          </a>
-        ))}
-      </nav>
 
       <section className="read__section" aria-labelledby="summary-h">
         <h2 className="read__h2" id="summary-h">
@@ -247,6 +257,7 @@ export default function Read() {
           books you can take off a shelf and open.
         </span>
       </footer>
-    </article>
+      </article>
+    </div>
   );
 }

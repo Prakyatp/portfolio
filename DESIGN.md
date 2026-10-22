@@ -32,9 +32,13 @@ across the gutter.
 
 **The name is the masthead, and the masthead is also the way out.** The name sits centred and
 large; the top right holds the two things a reader might want instead of a 3D shelf — the
-résumé, and `/read`. Opening a volume fades the name but *not* those two links: they are the
-escape hatch, so they are exactly what a reader wants when the shelf is not working for them.
-The static catalog repeats them for the same reason.
+résumé, and `/read`. The static catalog repeats them for the same reason.
+
+Opening a volume takes the whole masthead with it, links included. They used to stay, on the
+theory that the moment someone is least enjoying the shelf is when they most want the way out
+— but the detail panel's close button lands in that same corner, and at shorter window heights
+the two sat on top of each other. `visibility` rides the fade out and snaps back on the way in,
+so the links leave the tab order while they are invisible instead of lurking in it.
 
 **The panel never scrolls.** Each volume carries the markup for its own right-hand side, and
 `fitPanel()` steps `--panel-scale` down until the column fits. It has to ask two questions, not
@@ -116,7 +120,15 @@ written into the document itself. That is the one duplication in the build, and 
 **When you change a role, a course or a paper, change both** — `src/data/site.ts` and the
 `BOOKS` array in `public/landing-pages/complete-shelf-v2.html`.
 
-**It prints.** `@media print` drops the actions, the nav and the footer, keeps entries off page
+**The table of contents stays reachable.** A sticky bar carries the name, the six section
+links and the résumé, and the link for whatever you are reading is marked. Only the marking
+needs JavaScript — an `IntersectionObserver` watching a band just under the bar — so with JS
+off it is still a working table of contents. Two things it needs to behave: `scroll-margin-top`
+scoped through `.readpage`, because `section[id]` in `globals.css` is sized for the drawer's
+taller header and out-specifies a bare class; and a background at 95% rather than 88%, because
+the accent-green project links smeared through the blur as the page passed under it.
+
+**It prints.** `@media print` drops the bar, the actions and the footer, keeps entries off page
 breaks, and appends the href after every external link, so a printed copy still carries its URLs.
 
 It is set like a document rather than like the rest of the site: **Newsreader** for the name and
@@ -234,7 +246,8 @@ Production build, driven in a real browser. Scripts in `.qa/` (gitignored).
 | The two masthead links | clickable through the header's `pointer-events: none`, and they hit-test to themselves |
 | `/read` from inside the frame | opens in a new tab — the authored sandbox allows popups, not top navigation |
 | The résumé from inside the frame | downloads as `Prakyat-Prakash-Resume.pdf`, 106,619 bytes |
-| Both links while a volume is open | still visible and still hit-testing, while the name fades |
+| The masthead while a volume is open | gone at 1440×900, 1280×720 and 1512×820: opacity 0, `visibility: hidden`, no geometry over the close button, and the close button still the top hit |
+| The sticky bar | pinned at top 0 after a 2200px scroll, the top hit at its own centre, and a jump from it lands the heading clear of it (76px desktop, 64px mobile) |
 | Keyboard | the two links are **first** in the frame's tab order, and `:focus-visible` draws the authored 1px ring |
 | `/read` at 1440 and 390 | 7 sections, 2 roles, 6 courses, 2 papers, 3 projects, 5 skill groups, no horizontal scroll |
 | `/read` with reveals | 0 sections hidden by motion — nothing waits for JavaScript |
