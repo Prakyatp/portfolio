@@ -35,7 +35,10 @@ export type Role = {
 export const site = {
   name: 'Prakyat Prakash',
   role: 'Software engineer and machine learning researcher',
-  url: 'https://prakyatprakash.com',
+  // The canonical host is the one that does not redirect: prakyat.com answers 308 and
+  // sends you to www, so www is what belongs in canonical links, the sitemap and the
+  // OG tags. Everything that needs the site's address reads it from here.
+  url: 'https://www.prakyat.com',
   description:
     'Software engineer and ML researcher at RIT. I build data pipelines, full-stack systems and models that go from notebook to production.',
   email: 'prakyat02@gmail.com',

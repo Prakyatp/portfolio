@@ -1,6 +1,6 @@
 # DESIGN.md
 
-prakyatprakash.com. What it is, how it is built, and what still needs your words.
+www.prakyat.com. What it is, how it is built, and what still needs your words.
 
 > Four directions are kept whole, one per branch. This is **`redesign/shelf`**.
 > **`redesign/folders`** is the drawer of file folders with the fluid name.
