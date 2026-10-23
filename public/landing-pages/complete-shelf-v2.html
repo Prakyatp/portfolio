@@ -2105,33 +2105,65 @@
       }
     }
 
-    /* A phone on its side, or a split screen: width to spare and no height at all,
-       which is the shape the desktop layout is already built for. Last, because a
-       landscape phone matches the block above as well. */
-    @media (max-height: 520px) and (min-width: 700px) {
+    /* ── the phone: the book goes behind, the text gets the page ──────────────
+       Sharing one small screen between a book and a section meant shrinking the type to
+       its floor and scrolling anyway. So on a phone the panel stops being a panel: it is
+       the page, at full size, and the book sits behind it. Nothing here opens a book
+       either — dragging a cover and turning pages want a pointer and room, and a phone
+       has neither; `phoneLayout` in the script refuses it by the same test.
+
+       This is last in the sheet, and its media query is deliberately wider than the two
+       blocks above, so a phone held either way lands here and not in a narrower rule. */
+    @media (max-width: 700px), (max-height: 520px) {
       .detail-panel {
-        top: 50%;
-        right: 16px;
-        bottom: auto;
-        left: auto;
-        width: min(50vw, 480px);
+        inset: 0;
+        width: auto;
         height: auto;
-        max-height: 92vh;
-        transform: translateY(-50%);
+        max-height: none;
+        padding: 68px 20px 28px;
+        transform: none;
         overflow-y: auto;
+        overscroll-behavior: contain;
+        /* Near enough to opaque to read against any cover, and no backdrop-filter:
+           that would make the panel the containing block for the fixed close button
+           below, and the button would scroll away with the text. */
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--paper) 74%, transparent),
+          color-mix(in srgb, var(--paper) 95%, transparent) 20vh
+        );
       }
 
       .mode-detail .detail-panel {
-        transform: translateY(-50%);
+        transform: none;
       }
 
       .detail-body {
         overflow: visible;
         flex: 0 0 auto;
+        font-size: 16px;
+      }
+
+      /* Pinned to the window, so the way out is there however far you have read. */
+      .close-button {
+        position: fixed;
+        top: 14px;
+        right: 14px;
+        background: color-mix(in srgb, var(--paper) 86%, transparent);
+      }
+
+      /* Neither control has anything to do when the book stays shut. */
+      .page-navigation,
+      .detail-controls {
+        display: none;
       }
 
       .detail-title {
-        font-size: clamp(1.7rem, 4vw, 2.4rem);
+        font-size: clamp(2.2rem, 11vw, 3.2rem);
+      }
+
+      .course-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
@@ -2789,6 +2821,14 @@
     let currentSpread = 0;
     let pointerDirty = false;
     let suspended = false;
+    /* A phone, by the same test the stylesheet uses: too narrow to put a book beside a
+       section, or too short to put one above it. Everything that changes on a phone hangs
+       off this one flag so the layout and the behaviour cannot disagree. */
+    let phoneLayout = false;
+    function isPhoneLayout() {
+      return window.innerWidth <= 700 || window.innerHeight <= 520;
+    }
+
     let viewWidth = window.innerWidth;
     let viewHeight = window.innerHeight;
     let detailViewOffsetX = 0;
@@ -4972,7 +5012,12 @@
       key.name = "shadow-key";
       key.position.set(-4.6, 7.4, 5.8);
       key.castShadow = true;
-      key.shadow.mapSize.set(2048, 2048);
+      // A quarter of the texels, on the devices least able to afford them. At the size
+      // a phone renders the shelf the softer edge is not visible.
+      key.shadow.mapSize.set(
+        isPhoneLayout() ? 1024 : 2048,
+        isPhoneLayout() ? 1024 : 2048
+      );
       key.shadow.camera.left = -6;
       key.shadow.camera.right = 6;
       key.shadow.camera.top = 6;
@@ -5194,6 +5239,12 @@
        body is measured after it is written and stepped down until it fits. */
     function fitPanel() {
       if (!detailBody) return;
+      /* On a phone the panel is the whole page and scrolls, so there is no box to fit
+         into and nothing to gain by shrinking: the type stays at full size. */
+      if (phoneLayout) {
+        detailBody.style.setProperty("--panel-scale", "1");
+        return;
+      }
       for (let step = 0; step < 20; step += 1) {
         const scale = 1 - step * 0.035;
         // Never apply a size below the floor: stepping past it and then breaking would
@@ -5262,6 +5313,10 @@
 
     function setReadingOpen(open, announce = true) {
       if (mode !== "detail" || readingOpen === open) return;
+      /* Dragging a cover and turning pages want a pointer and room, and a phone has
+         neither. Guarding here rather than at each caller covers the button, the tap and
+         the drag-release in one place, so no path can get a book open on a phone. */
+      if (phoneLayout && open) return;
       cancelPageDrag();
       readingOpen = open;
       if (!readingOpen) currentSpread = 0;
@@ -6420,7 +6475,11 @@
     }
 
     function updateDust(elapsed) {
-      if (reducedMotion) return;
+      /* The drifting dust is the only thing that never settles, and it is the reason the
+         loop renders forever. On a phone that costs a frame's worth of GPU every 16ms for
+         an effect nobody can see at that size — and it competes with scrolling the text.
+         Dropping it lets the loop stop, which is most of what makes a phone feel smooth. */
+      if (reducedMotion || phoneLayout) return;
       const dust = scene.getObjectByName("paper-dust");
       if (dust) {
         dust.rotation.y = elapsed * 0.012;
@@ -6476,17 +6535,23 @@
 
       const shelfMoving = Math.abs(position - targetPosition) > 0.0005 || wheelIdle > 0;
 
-      const shouldContinue = !reducedMotion
+      /* With nothing drifting, a phone only needs frames while something is actually
+         moving: a transition, the shelf sliding, a theme crossfading, or a finger on the
+         book. Settled on the shelf — or reading, where the text covers the scene entirely
+         — it draws nothing at all. Every gesture already calls requestFrame(). */
+      const shouldContinue = (!reducedMotion && !phoneLayout)
         || mode === "opening"
         || mode === "closing"
         || shelfMoving
-        || themeIsMoving;
+        || themeIsMoving
+        || (phoneLayout && (pageDrag.active || pointerDirty));
       if (shouldContinue && !suspended) requestFrame();
     }
 
     function resize() {
       viewWidth = window.innerWidth;
       viewHeight = window.innerHeight;
+      phoneLayout = isPhoneLayout();
       configureResponsiveTargets();
       resetResolution();
       camera.aspect = viewWidth / viewHeight;

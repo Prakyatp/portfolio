@@ -161,29 +161,54 @@ GitHub, résumé — each with the address spelled out, rather than a row of unl
 The résumé PDF carries a phone number; the page does not. A résumé is handed to someone, and a
 public page is scraped by anyone, so the number stays in the file you send.
 
-### Small screens
+### The phone
 
-Everything from a tablet up fits with nothing to scroll. Two cases cannot, and they are sized
-on their own rather than in the general narrow block, so a normal phone — which does fit — is
-left alone.
+On a phone the panel stops being a panel. Sharing one small screen between a book and a
+section meant shrinking the type to a floor and scrolling anyway, so instead **the text takes
+the page and the book goes behind it**: full width, full height, 16px, nothing shrunk and
+nothing lost, with the cover a soft shape under a near-opaque wash of the volume's own paper.
+The close button is `position: fixed`, so the way out is there however far you have read —
+which is also why that rule carries no `backdrop-filter`, since a filtered ancestor would
+become the containing block and the button would scroll away with the text.
 
-| | panel | type | result |
-|---|---|---|---|
-| 320 × 568 | `min(68vh, 460px)` | floor, 0.685 | ~31px of scroll |
-| 844 × 390, a phone on its side | the desktop shape, right-hand side | floor, 0.685 | a short scroll |
-| 390 × 844 and up | as before | 0.825 → 1.0 | **fits exactly** |
+**The book does not open on a phone.** Dragging a cover and turning pages want a pointer and
+room, and a phone has neither. One guard in `setReadingOpen` refuses it, which covers the
+button, the tap and the drag-release together, and the page controls are hidden rather than
+left there doing nothing.
 
-**The type floor was 0.5, which is 8px.** On a small phone the panel bottomed out there and
-still clipped, so the reader got neither the size nor the content. It stops at 11px now, and
-the remainder is reachable by scrolling. A phone cannot show six courses beside a book at a
-size anyone can read; between unreadable-and-clipped and readable-and-scrollable, the second
-is the honest answer. Nothing at tablet size or above ever reaches the floor.
+One trap worth recording from the layout before this one. Adding `overflow-y: auto` to a panel
+does nothing on its own: a scroll container builds its scrollable area from its children's
+*boxes*, and `.detail-body` is `flex: 0 1 auto`, so it shrank to the height flex gave it
+however far its text spilled past. The panel saw a child that fitted. It takes `flex: 0 0 auto`
+as well — the body at its real height — before the panel can see what is there.
 
-One trap worth recording. Adding `overflow-y: auto` to the panel did nothing on its own: a
-scroll container builds its scrollable area from its children's *boxes*, and `.detail-body` is
-`flex: 0 1 auto`, so it shrank to the height flex gave it however far its text spilled past.
-The panel saw a child that fitted. It takes `flex: 0 0 auto` as well — the body at its real
-height — before the panel can see, and scroll, what is actually there.
+| | |
+|---|---|
+| `max-width: 700px`, or `max-height: 520px` | the phone layout, in CSS and in `phoneLayout` |
+| 390 × 844, all five volumes | scale **1**, 16px, full page, close button pinned, book stays shut |
+| tablet and up | unchanged — the book still opens, the panel still fits exactly |
+
+### Smoothness on a phone
+
+**The loop stops.** The drifting paper dust was the only thing that never settled, and it is
+what kept the renderer drawing every 16ms forever. On a phone it buys an effect nobody can see
+at that size while competing with the scroll of the text, so it is dropped there — and with it
+gone the loop can stop whenever nothing is moving.
+
+| | shelf idle | reading idle |
+|---|---|---|
+| Phone | **0 frames/sec** | **0 frames/sec** |
+| Desktop | ~51 frames/sec | ~51 frames/sec |
+
+Every gesture already calls `requestFrame()`, so it wakes on a touch and the close transition
+still runs its full length. The shadow map also drops to 1024² on a phone, a quarter of the
+texels on the devices least able to afford them.
+
+Measuring this is harder than it sounds. **Headless Chromium throttles `requestAnimationFrame`**,
+so a frame *rate* read there is the browser's throttle, not the page — it reported 0 and 1/sec
+for two cases that differ by 50. And a headed window sits under the cursor, so a stray trackpad
+wheel wakes the loop and reads as 84/sec. What settles it is counting the page's own frames,
+headed, across several windows, with a flag on any window where the shelf actually moved.
 
 ---
 
