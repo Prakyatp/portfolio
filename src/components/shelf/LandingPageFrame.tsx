@@ -1,7 +1,7 @@
 'use client';
 // src/shaders/landing-pages/LandingPageFrame.tsx from the registered Complete Shelf bundle,
-// copied as authored. The only change is the 'use client' directive the App Router needs and
-// the local import path for the typography seam.
+// copied as authored, apart from the 'use client' directive the App Router needs, the local
+// import path for the typography seam, and the two sandbox tokens noted at URL_FRAME_SANDBOX.
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 
 import {
@@ -44,8 +44,24 @@ export type LandingPageProps = Omit<
   'sourceUrl' | 'title' | 'customization' | 'backgroundCanvasSelector' | 'backgroundVisualSelector'
 >;
 
+// Two tokens added to the authored list, because this document is the real landing page now
+// rather than a catalog thumbnail, so its links have to behave like links.
+//
+// `allow-popups` opens a new tab, but that tab INHERITS the sandbox. A sandboxed tab cannot
+// run Chrome's PDF viewer, so the resume button opened on chrome-error://chromewebdata
+// instead of the PDF. `allow-popups-to-escape-sandbox` makes an opened tab an ordinary page,
+// which fixes the resume and also means the external sites (LinkedIn, GitHub) land in a
+// normal tab rather than a sandboxed one that only happens to work in Chromium.
+//
+// `allow-top-navigation-by-user-activation` lets a real click move the top window while a
+// script still cannot, so a same-tab link in the document is not silently dropped.
+//
+// Neither token weakens anything here: the frame already runs `allow-scripts` with
+// `allow-same-origin` on a first-party document from this origin, and that pair can clear
+// its own sandbox attribute anyway. Measured: see DESIGN.md, "Links out of the frame".
 const URL_FRAME_SANDBOX =
-  'allow-downloads allow-forms allow-modals allow-popups allow-same-origin allow-scripts';
+  'allow-downloads allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox'
+  + ' allow-same-origin allow-scripts allow-top-navigation-by-user-activation';
 const SRCDOC_FRAME_SANDBOX = 'allow-downloads allow-forms allow-modals allow-popups allow-scripts';
 
 const BACKGROUND_PRESENTATION_STYLE_ID = 'threeui-background-presentation';

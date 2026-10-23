@@ -212,6 +212,42 @@ headed, across several windows, with a flag on any window where the shelf actual
 
 ---
 
+## Links out of the frame
+
+The shelf is an authored document inside a sandboxed `<iframe>`, and the sandbox that shipped
+with it was written for a catalog thumbnail, where nothing was meant to be clicked. As the real
+landing page it has to let five links out, and one of them did not go.
+
+`allow-popups` lets the document open a tab, but **that tab inherits the sandbox**. Chrome will
+not run its PDF viewer in a sandboxed context, so the Résumé button in the Contact volume opened
+`chrome-error://chromewebdata` — a dead tab titled `www.prakyat.com`. Adding
+`allow-popups-to-escape-sandbox` makes an opened tab an ordinary page and the PDF renders.
+
+Two things the same investigation ruled out, both of which looked like the cause first:
+
+- **`mailto:` was never broken.** `allow-popups` already covers an external protocol handler;
+  Chrome logs `Launched external handler for 'mailto:…'` with the authored sandbox in place. It
+  only *looked* broken under test, because an automated browser has no mail client to hand it to,
+  so a working click and a dropped one are both silent.
+- **LinkedIn and GitHub open under the authored sandbox too**, in Chromium — the popup inherits
+  `allow-same-origin`, so it gets a real origin instead of an opaque one and the page loads. The
+  A/B against the live site returned both correct profile titles. So the reported failure there
+  is not reproducible in Chromium, and is most likely a stricter browser or a popup blocker
+  refusing a *sandboxed* popup. Escaping the sandbox is the fix for that case as well, which is
+  why the flag goes in rather than a per-link workaround.
+
+Neither added token weakens anything real. The frame already runs `allow-scripts` together with
+`allow-same-origin` on a first-party document from its own origin, and Chrome warns about exactly
+that pair on every load: it can clear its own `sandbox` attribute. The sandbox here is hygiene,
+not a boundary.
+
+On `/read` the same promise was broken differently, and more quietly. Every contact row carries a
+`↗`, but the row's target was chosen with `href.startsWith('http')` — and the résumé is
+`/resume.pdf`, a same-origin path. So the one row that looked most like a download was the one
+that replaced the page the reader was on. The test is now "anything but `mailto:`".
+
+---
+
 ## Provenance
 
 The source was fetched, not reconstructed.
@@ -301,8 +337,12 @@ Production build, driven in a real browser. Scripts in `.qa/` (gitignored).
 | The resolution ladder | walks 1.75 → 1 inside a second, then **zero changes over the next 19s**; re-searches to 1.5 when the window narrows |
 | The masthead at 9 widths, 390 to 1920 | the name never reaches the links, nothing leaves the viewport |
 | The two masthead links | clickable through the header's `pointer-events: none`, and they hit-test to themselves |
-| `/read` from inside the frame | opens in a new tab — the authored sandbox allows popups, not top navigation |
-| The résumé from inside the frame | downloads as `Prakyat-Prakash-Resume.pdf`, 106,619 bytes |
+| `/read` from inside the frame | opens in a new tab |
+| The masthead résumé from inside the frame | downloads as `Prakyat-Prakash-Resume.pdf`, 106,619 bytes |
+| The Contact résumé from inside the frame | was `chrome-error://chromewebdata` on the live site, **now the PDF** — a sandboxed tab cannot run the PDF viewer |
+| LinkedIn and GitHub from inside the frame, live | both open and load the right profiles, before *and* after the sandbox change |
+| `mailto:` from inside the frame | `Launched external handler` under both sandboxes — never broken |
+| The résumé row on `/read` | opened in the same tab despite its `↗`; now a new tab |
 | The masthead while a volume is open | gone at 1440×900, 1280×720 and 1512×820: opacity 0, `visibility: hidden`, no geometry over the close button, and the close button still the top hit |
 | The sticky bar | pinned at top 0 after a 2200px scroll, the top hit at its own centre, and a jump from it lands the heading clear of it (76px desktop, 64px mobile) |
 | Keyboard | the two links are **first** in the frame's tab order, and `:focus-visible` draws the authored 1px ring |

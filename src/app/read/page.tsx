@@ -239,10 +239,13 @@ export default function Read() {
         <ul className="contact">
           {contactLinks.map((c) => (
             <li key={c.label}>
+              {/* Every row but the mail one carries a ↗, so every row but the mail one has to
+                  open a tab. The resume is a same-origin path, not an http:// address, so a
+                  `startsWith('http')` test left it replacing the page the reader was on. */}
               <a
                 href={c.href}
-                target={c.href.startsWith('http') ? '_blank' : undefined}
-                rel={c.href.startsWith('http') ? 'noopener' : undefined}
+                target={c.href.startsWith('mailto:') ? undefined : '_blank'}
+                rel={c.href.startsWith('mailto:') ? undefined : 'noopener'}
               >
                 <span className="contact__label">{c.label}</span>
                 <span className="contact__hint">{c.hint}</span>
